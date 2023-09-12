@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class Items extends Model
+class Item extends Model
 {
     use HasFactory;
-	
+
+	protected $fillable = ['vehicle_license_plate','name_of_items','price','distributor'];	
+		
 	public static function getItemsDataOnlyTen($firstItems=0, $sizeOfPage=10){
 		return DB::table('items')->skip($firstItems)->take($sizeOfPage)->get();
 	}	

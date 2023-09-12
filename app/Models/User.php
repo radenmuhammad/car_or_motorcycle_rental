@@ -2,24 +2,26 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+	use HasApiTokens, HasFactory, Notifiable;
+	
+	protected $fillable = ['name','username','email','password','role'];	
+	
+	public static function getUsersDataOnlyTen($firstItems=0, $sizeOfPage=10){
+		return DB::table('users')->skip($firstItems)->take($sizeOfPage)->get();
+	}	
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $table = 'users';
-    protected $primaryKey = 'id_user';	 
-	 
-    protected $fillable = ['name','username','password','role','email','verify_key','active'];
-
+	public static function countUsersPage($sizeOfPage=10){
+		return intval(DB::table('users')->count()/$sizeOfPage);		
+	}
+	
+	
 }

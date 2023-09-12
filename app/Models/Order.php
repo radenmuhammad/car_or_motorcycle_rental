@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class Orders extends Model
+class Order extends Model
 {
     use HasFactory;
 	

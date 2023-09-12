@@ -11,19 +11,33 @@ use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
 use App\Classes;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Items;
-use App\Models\Users;
-use App\Models\Rents;
-use App\Models\Orders;
+use App\Models\Item;
+use App\Models\User;
+use App\Models\Rent;
+use App\Models\Order;
+use App\Charts\UserChart;
+use PDF;
 
 class HomeController extends Controller
 {
+	
+
+	
+	public function create_orders_pdf() {
+      // retreive all records from db
+      $orders = Order::all()->toArray();
+      // share data to view
+      view()->share('orders',$orders);
+      $pdf = PDF::loadView('pdf_view_for_order', $orders)->setPaper('a4', 'landscape');;
+      // download PDF file with download method
+      return $pdf->download('orders.pdf');
+    }
 	
     public function logout(Request $request){
 		if($request->session()->has('userName')){
 			$request->session()->forget('userName');
 		}
-        return redirect('/');
+        return redirect('actionlogout');
     }
 	
 	public function index(Request $request){
@@ -44,26 +58,31 @@ class HomeController extends Controller
 		if(empty($requests['edit_rents'])){
 			$requests['edit_rents'] = '';
 		}else{
-			$rent_selected = Rents::getRentsSelected($requests['edit_rents']);				
+			$rent_selected = Rent::getRentsSelected($requests['edit_rents']);				
 		}
 		$edit_items_selected = Array();
 		if(empty($requests['edit_items'])){
 			$requests['edit_items'] = '';
 		}else{			
-			$edit_items_selected = Items::getItemsSelected($requests['edit_items']);		
+			$edit_items_selected = Item::getItemsSelected($requests['edit_items']);		
 		}
-		if(!Session::has('userName')){
-			return Redirect::intended('/');						
-		}
-		$users = Users::getUsersDataOnlyTen($requests['count_users'], $sizeOfPage);		
-		$count_users = Users::countUsersPage($sizeOfPage);						
-		$items = Items::getItemsDataOnlyTen($requests['count_items'], $sizeOfPage);
-		$count_items = Items::countItemsPage($sizeOfPage);
-		$rents = Rents::getRentsDataOnlyTen($requests['count_rents'], $sizeOfPage);
-		$count_rents = Rents::countRentsPage($sizeOfPage);		
-		$orders = Orders::getOrdersDataOnlyTen($requests['count_orders'], $sizeOfPage);
-		$count_orders = Orders::countOrdersPage($sizeOfPage);
-        return view('home',['current_orders'=>$requests['count_orders'],
+		$users = User::getUsersDataOnlyTen($requests['count_users'], $sizeOfPage);		
+		$count_users = User::countUsersPage($sizeOfPage);						
+		$items = Item::getItemsDataOnlyTen($requests['count_items'], $sizeOfPage);
+		$count_items = Item::countItemsPage($sizeOfPage);
+		$rents = Rent::getRentsDataOnlyTen($requests['count_rents'], $sizeOfPage);
+		$count_rents = Rent::countRentsPage($sizeOfPage);		
+		$orders = Order::getOrdersDataOnlyTen($requests['count_orders'], $sizeOfPage);
+		$count_orders = Order::countOrdersPage($sizeOfPage);
+		$year = [date("Y",strtotime("-4 year")),date("Y",strtotime("-3 year")),date("Y",strtotime("-2 year")),date("Y",strtotime("-1 year")),date("Y")];
+        $order_charts = [];
+        foreach ($year as $key => $value) {
+            $order_charts[] = Order::where(\DB::raw("DATE_FORMAT(date_rent_start, '%Y')"),$value)->count();
+        }
+        return view('home',[
+							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
+							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),
+							'current_orders'=>$requests['count_orders'],
 		                    'current_rents'=>$requests['count_rents'],
 							'current_items'=>$requests['count_items'],
 						    'edit_items_selected'=>$edit_items_selected,
@@ -76,12 +95,13 @@ class HomeController extends Controller
 							'count_items' => $count_items,							
 		                    'users' => $users,
 		                    'count_users' => $count_users,						
-							'userName' => Session::get('userName')]);
+							'userName' => Session::get('userName')
+							]);
     }
 	
 	public function update_the_returned_items(Request $request){
 		$requests = $request->only('vehicle_license_plate');
-		Items::updateAvailableTrueFromItemsByVehicleLicensePlate($requests['vehicle_license_plate']);				
+		Item::updateAvailableTrueFromItemsByVehicleLicensePlate($requests['vehicle_license_plate']);				
 		return Redirect::intended('home');			
 	}
 	
@@ -93,7 +113,7 @@ class HomeController extends Controller
 		'distributor',
 		'created_at'		
 		);
-		Items::insertItems($requests);		
+		Item::insertItems($requests);		
 		return Redirect::intended('home');					
 	}
 	
@@ -107,7 +127,7 @@ class HomeController extends Controller
 			'months_price',
 			'years_price'
 		);		
-		Rents::updateRents($requests);
+		Rent::updateRents($requests);
 		return Redirect::intended('home');					
 	}
 	
@@ -161,8 +181,8 @@ class HomeController extends Controller
 					   ($weeks_order * $requests['weeks_price']) +	
 					   ($days_order * $requests['days_price'])					   
 		;
-		$vehicle_license_plate = Items::getItemsByNameOfItemsAndAvailableTrue($requests['name_of_items']);
-		Items::updateAvailableFalseFromItemsByVehicleLicensePlate($vehicle_license_plate);		
+		$vehicle_license_plate = Item::getItemsByNameOfItemsAndAvailableTrue($requests['name_of_items']);
+		Item::updateAvailableFalseFromItemsByVehicleLicensePlate($vehicle_license_plate);		
 		if(!empty($vehicle_license_plate)){
 			$requests['vehicle_license_plate'] = $vehicle_license_plate;
 			$requests['days_order'] = $days_order;
@@ -170,11 +190,11 @@ class HomeController extends Controller
 			$requests['weeks_order'] = $weeks_order;
 			$requests['years_order'] = $years_order;
 			$requests['total_of_order'] = $total_of_order;			
-			Orders::insertOrders($requests);	
+			Order::insertOrders($requests);	
 			return view("update_orders",["alert"=>"this item has been already rent!"]);					
 		}else{
 			return view("update_orders",["alert"=>"this item is not available!"]);					
 		}
 	}
-	
+		
 }

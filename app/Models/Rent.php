@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class Rents extends Model
+class Rent extends Model
 {
     use HasFactory;
 	

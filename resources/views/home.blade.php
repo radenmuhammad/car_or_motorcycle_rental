@@ -23,7 +23,7 @@
   </script>
 </head>
 	@inject('helper', \App\Classes\CommonClass::class)
-  <h4>Selamat Datang <b><?=$userName?></b>.</h4>
+  <h4>Selamat Datang <b>{{Auth::user()->email}}</b>.</h4>
 	  Rents:<br>
 	  <table border=1>
 	  <?php 
@@ -47,7 +47,7 @@
 				}
 			}
 			?><td>
-				<form action="/update_orders" method="POST">
+				<form action="{{route('update_orders')}}" method="POST">
 					@csrf
 					<input type="hidden" id="orders_name_of_items" name="name_of_items" value="<?=$rent['name_of_items']?>">					
 					<input type="hidden" id="orders_days_price" name="days_price" value="<?=$rent['days_price']?>">					
@@ -79,7 +79,7 @@
 				}				
 			}
 		?>	  
-	<form action="/update_rent" method="POST">
+	<form action="{{route('update_rent')}}" method="POST">
 		@csrf	
 	  <?php 
 	  // old_name_of_items
@@ -143,7 +143,19 @@
 				}
 			}
 		?>	  
-	<form action="/update_items" method="POST">
+		<form action="{{ route('import.excel') }}"
+			  method="POST"
+			  enctype="multipart/form-data">
+			  Upload Items:
+			@csrf
+			<input type="file" name="file"
+				   class="form-control">
+			<br>
+			<button class="btn btn-success">
+				  Import Items Data
+			   </button>
+		</form>				
+	<form action="{{ route('update_items') }}" method="POST">
 		@csrf	
 	  <?php 
 		foreach ($items as $item) {
@@ -177,7 +189,7 @@
 		}
 	  ?>
 		<input id="submit" name="submit" type="submit" value="submit"></input><br>									  
-	</form>		  
+	</form>
 	  Orders:<br>
 	  <table border=1>
 	  <?php
@@ -205,6 +217,8 @@
 		}
 		?>		
 	  </table>	
+	  <a href="/create_orders_pdf">Download For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('export.excel') }}">Download For Excel</a>		
 		<?php 
 			for($a=1;$a<=$count_orders;$a++){
 				if($a==$current_orders+1){
@@ -214,6 +228,42 @@
 				}				
 			}
 		?>
+		<canvas id="canvas" height="280" width="600"></canvas>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+		<script>
+			var year = <?php echo $year; ?>;
+			var order_charts = <?php echo $order_charts; ?>;
+			var barChartData = {
+				labels: year,
+				datasets: [{
+					label: 'Order',
+					backgroundColor: "pink",
+					data: order_charts
+				}]
+			};
+
+			window.onload = function() {
+				var ctx = document.getElementById("canvas").getContext("2d");
+				window.myBar = new Chart(ctx, {
+					type: 'bar',
+					data: barChartData,
+					options: {
+						elements: {
+							rectangle: {
+								borderWidth: 2,
+								borderColor: '#c1c1c1',
+								borderSkipped: 'bottom'
+							}
+						},
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Yearly Orders Total'
+						}
+					}
+				});
+			};
+		</script>		
 		<a href="/logout">logout</a>
 		</body>
 </html>
