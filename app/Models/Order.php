@@ -11,6 +11,10 @@ class Order extends Model
 {
     use HasFactory;
 	
+	public static function getOrderChart($value){
+		return Order::whereRaw("DATE_FORMAT(date_rent_start, '%Y%m')='".$value."'")->count();	
+	}
+	
 	public static function getOrdersDataOnlyTen($firstItems=0, $sizeOfPage=10){
 		return DB::table('orders')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
 	}	

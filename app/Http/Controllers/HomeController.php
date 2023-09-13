@@ -74,12 +74,11 @@ class HomeController extends Controller
 		$count_rents = Rent::countRentsPage($sizeOfPage);		
 		$orders = Order::getOrdersDataOnlyTen($requests['count_orders'], $sizeOfPage);
 		$count_orders = Order::countOrdersPage($sizeOfPage);
-		$year = [date("Y",strtotime("-4 year")),date("Y",strtotime("-3 year")),date("Y",strtotime("-2 year")),date("Y",strtotime("-1 year")),date("Y")];
-        $order_charts = [];
+		$year = [date("Ym",strtotime("-4 month")),date("Ym",strtotime("-3 month")),date("Ym",strtotime("-2 month")),date("Ym",strtotime("-1 month")),date("Ym")];
+        $order_charts = Array();
         foreach ($year as $key => $value) {
-            $order_charts[] = Order::where(\DB::raw("DATE_FORMAT(date_rent_start, '%Y')"),$value)->count();
-        }
-        return view('home',[
+            $order_charts[] = Order::getOrderChart($value);
+        }        return view('home',[
 							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
 							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),
 							'current_orders'=>$requests['count_orders'],
