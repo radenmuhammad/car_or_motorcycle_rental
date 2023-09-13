@@ -33,8 +33,12 @@ Route::post('register/action', [RegisterController::class, 'actionregister'])->n
 
 Route::controller(ExportExcelController::class)->group(function(){
     Route::get('export/excel', 'export')->name('export.excel');
-	Route::post('import','import')->name('import.excel');
+	Route::post('importItem','importItem')->name('importItem.excel');
+	Route::post('importRent','importRent')->name('importRent.excel');
+
 });
+
+// importRent
 
 
 

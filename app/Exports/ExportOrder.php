@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class ExportUsers implements FromCollection, WithHeadings
+class ExportOrder implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection

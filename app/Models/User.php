@@ -16,11 +16,11 @@ class User extends Authenticatable
 	protected $fillable = ['name','username','email','password','role'];	
 	
 	public static function getUsersDataOnlyTen($firstItems=0, $sizeOfPage=10){
-		return DB::table('users')->skip($firstItems)->take($sizeOfPage)->get();
+		return DB::table('users')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
 	}	
 
 	public static function countUsersPage($sizeOfPage=10){
-		return intval(DB::table('users')->count()/$sizeOfPage);		
+		return ceil(DB::table('users')->count()/$sizeOfPage);		
 	}
 	
 	

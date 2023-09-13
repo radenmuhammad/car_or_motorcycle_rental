@@ -49,7 +49,7 @@ class HomeController extends Controller
 			'edit_rents',
 			'edit_items'
 		);
-		$sizeOfPage = 10;
+		$sizeOfPage = 3;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
 		$requests['count_items']=(empty($requests['count_items'])?0:$requests['count_items'])-1;
 		$requests['count_rents']=(empty($requests['count_rents'])?0:$requests['count_rents'])-1;

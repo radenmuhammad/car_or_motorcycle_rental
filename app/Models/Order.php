@@ -12,11 +12,11 @@ class Order extends Model
     use HasFactory;
 	
 	public static function getOrdersDataOnlyTen($firstItems=0, $sizeOfPage=10){
-		return DB::table('orders')->skip($firstItems)->take($sizeOfPage)->get();
+		return DB::table('orders')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
 	}	
 
 	public static function countOrdersPage($sizeOfPage=10){
-		return intval(DB::table('orders')->count()/$sizeOfPage);		
+		return ceil(DB::table('orders')->count()/$sizeOfPage);		
 	}
 	
 	public static function insertOrders($requests){

@@ -18,7 +18,7 @@ class Item extends Model
 	}	
 	
 	public static function countItemsPage($sizeOfPage=10){
-		return intval(DB::table('items')->count()/$sizeOfPage);		
+		return ceil(DB::table('items')->count()/$sizeOfPage);		
 	}
 	
 	public static function insertItems($requests){

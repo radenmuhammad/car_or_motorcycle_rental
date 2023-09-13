@@ -38,7 +38,15 @@
 				?><td>&nbsp;</td></tr><?php	
 				$header = false;				
 			}		
-			?><tr><td><input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_rents=<?=$rent["name_of_items"]?>';"/></td><?php
+			?><tr><td>
+			<?php 
+			if(Auth::user()->role == "Administrator"){			
+			?>
+			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_rents=<?=$rent["name_of_items"]?>';"/>
+			<?php 
+			}
+			?>
+			</}td><?php
 			foreach ($rent as $a => $b){
 				if(str_contains($a, 'price')){
 					?><td><?=$helper->rupiah($b)?></td><?php					
@@ -78,6 +86,7 @@
 					echo "<a href='?count_rents=".$a."'>".$a."</a>&nbsp;";					
 				}				
 			}
+			if(Auth::user()->role == "Administrator"){			
 		?>	  
 	<form action="{{route('update_rent')}}" method="POST">
 		@csrf	
@@ -101,6 +110,21 @@
 	  ?>
 		<input id="submit" name="submit" type="submit" value="submit"></input><br>									  
 	</form>	
+		<form action="{{ route('importRent.excel') }}"
+			  method="POST"
+			  enctype="multipart/form-data">
+			  Upload Rent Data:
+			@csrf
+			<input type="file" name="file"
+				   class="form-control">
+			<br>
+			<button class="btn btn-success">
+				  Import Rent Data
+			   </button>
+		</form>			
+	<?php 
+		}
+	?>
 	  Items:<br>	  
 	  <table border=1>
 	  <?php
@@ -115,7 +139,15 @@
 				?><td>&nbsp;</td></tr><?php	
 				$header = false;				
 			}		
-			?><tr><td><input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_items=<?=$item["vehicle_license_plate"]?>';"/></td><?php
+			?><tr><td>
+		<?php 
+			if(Auth::user()->role == "Administrator"){			
+			?>			
+			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_items=<?=$item["vehicle_license_plate"]?>';"/>
+			<?php 
+			}
+			?>		
+			</td><?php
 			foreach ($item as $a => $b){
 				if(str_contains($a, 'price')){
 					?><td><?=$helper->rupiah($b)?></td><?php						
@@ -142,8 +174,9 @@
 					echo "<a href='?count_items=".$a."'>".$a."</a>&nbsp;";					
 				}
 			}
+			if(Auth::user()->role == "Administrator"){
 		?>	  
-		<form action="{{ route('import.excel') }}"
+		<form action="{{ route('importItem.excel') }}"
 			  method="POST"
 			  enctype="multipart/form-data">
 			  Upload Items:
@@ -154,7 +187,11 @@
 			<button class="btn btn-success">
 				  Import Items Data
 			   </button>
-		</form>				
+		</form>			
+			<?php
+			}
+			if(Auth::user()->role == "Administrator"){			
+			?>
 	<form action="{{ route('update_items') }}" method="POST">
 		@csrf	
 	  <?php 
@@ -190,6 +227,9 @@
 	  ?>
 		<input id="submit" name="submit" type="submit" value="submit"></input><br>									  
 	</form>
+		<?php 
+			}
+		?>
 	  Orders:<br>
 	  <table border=1>
 	  <?php
@@ -217,8 +257,6 @@
 		}
 		?>		
 	  </table>	
-	  <a href="/create_orders_pdf">Download For PDF</a><br>	
-	  <a class="btn btn-info" href="{{ route('export.excel') }}">Download For Excel</a>		
 		<?php 
 			for($a=1;$a<=$count_orders;$a++){
 				if($a==$current_orders+1){
@@ -228,6 +266,8 @@
 				}				
 			}
 		?>
+	  <br>	<a href="/create_orders_pdf">Download For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('export.excel') }}">Download For Excel</a><br>		
 		<canvas id="canvas" height="280" width="600"></canvas>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 		<script>

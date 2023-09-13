@@ -9,19 +9,27 @@ use Carbon\Carbon;
 
 class Rent extends Model
 {
+	protected $fillable = [
+	'name_of_items','type_of_items','days_price','weeks_price','months_price','years_price'
+	];	
+	
     use HasFactory;
 	
 	public static function getRentsDataOnlyTen($firstItems=0, $sizeOfPage=10){
-		return DB::table('rents')->skip($firstItems)->take($sizeOfPage)->get();
+		return DB::table('rents')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
 	}	
 
 	public static function countRentsPage($sizeOfPage=10){
-		return intval(DB::table('rents')->count()/$sizeOfPage);		
+		return ceil(DB::table('rents')->count()/$sizeOfPage);		
 	}
 	
 	public static function updateRents($requests){			
-		$items = DB::table('rents')
-			->where('name_of_items', $requests['old_name_of_items'])->get();				
+		$items = (array)DB::table('rents')
+			->where('name_of_items', $requests['old_name_of_items'])->first();
+		if(empty($requests['old_name_of_items'])){
+		$items = (array)DB::table('rents')
+			->where('name_of_items', $requests['name_of_items'])->first();			
+		}			
 		if(empty($items)){					
 			DB::table('rents')->insert(
 				array(
