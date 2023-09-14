@@ -126,7 +126,7 @@ class HomeController extends Controller
 		return Redirect::intended('home');					
 	}
 	
-	public function update_rent(Request $request){
+	public function update_rents(Request $request){
 		$requests = $request->only(
 			'old_name_of_items',
 			'name_of_items',

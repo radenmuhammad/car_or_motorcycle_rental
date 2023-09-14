@@ -1,7 +1,7 @@
 <html>
 	<body>
 	@inject('helper', \App\Classes\CommonClass::class)	
-	  Item:<br>
+	  Items:<br>
 	  <table border=1>
 	  <?php
 		$header = true;	  

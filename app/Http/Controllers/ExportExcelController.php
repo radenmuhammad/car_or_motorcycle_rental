@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Exports\ExportOrder;
+use App\Exports\ExportItem;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportItem;
 use App\Imports\ImportRent;
@@ -17,18 +18,23 @@ class ExportExcelController extends Controller
        return view('index');
     }
 
-    public function export() 
+    public function exportItems() 
+    {
+        return Excel::download(new ExportItem, 'items.xlsx');
+    }    
+
+    public function exportOrders() 
     {
         return Excel::download(new ExportOrder, 'orders.xlsx');
     }    
 		 
-    public function importItem(Request $request){
+    public function importItems(Request $request){
         Excel::import(new ImportItem,
                       $request->file('file')->store('files'));
         return redirect()->back();
     }		
 
-    public function importRent(Request $request){
+    public function importRents(Request $request){
         Excel::import(new ImportRent,
                       $request->file('file')->store('files'));
         return redirect()->back();

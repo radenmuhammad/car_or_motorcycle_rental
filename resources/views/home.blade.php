@@ -121,7 +121,7 @@
 			}
 			if(Auth::user()->role == "Administrator"){			
 		?>	  
-	<form action="{{route('update_rent')}}" method="POST">
+	<form action="{{route('update_rents')}}" method="POST">
 		@csrf	
 	  <?php 
 	  // old_name_of_items
@@ -143,7 +143,7 @@
 	  ?>
 		<input id="submit" name="submit" type="submit" value="submit"></input><br>									  
 	</form>	
-		<form action="{{ route('importRent.excel') }}"
+		<form action="{{ route('importRents.excel') }}"
 			  method="POST"
 			  enctype="multipart/form-data">
 			  Upload Rent Data:
@@ -209,10 +209,11 @@
 			}
 		?>
 	  <br><a href="{{ route('create_items_pdf') }}">Download For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('exportItems.excel') }}">Download For Excel</a><br>		
 		<?php
 			if(Auth::user()->role == "Administrator"){
 		?>	  
-		<form action="{{ route('importItem.excel') }}"
+		<form action="{{ route('importItems.excel') }}"
 			  method="POST"
 			  enctype="multipart/form-data">
 			  Upload Items:
@@ -303,7 +304,7 @@
 			}
 		?>
 	  <br><a href="{{ route('create_orders_pdf') }}">Download For PDF</a><br>	
-	  <a class="btn btn-info" href="{{ route('export.excel') }}">Download For Excel</a><br>		
+	  <a class="btn btn-info" href="{{ route('exportOrders.excel') }}">Download For Excel</a><br>		
 		<canvas id="canvas" height="280" width="600"></canvas>
 		<a href="/logout">logout</a>
 		</body>
