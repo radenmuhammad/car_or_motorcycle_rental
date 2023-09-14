@@ -3,24 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rent System</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-  <script>
-  $(function() {
-		$(".date_rent_start,.date_rent_end").datepicker();
-		$(".date_rent_start,.date_rent_end").datepicker("option", "dateFormat", "yy-mm-dd");
-		$('.number').keyup(function(e){
-		  if (/\D/g.test(this.value))
-		  {
-			// Filter non-digits from input value.
-			this.value = this.value.replace(/\D/g, '');
-		  }
-		});		
-  });
-  </script>
+  <title>Rental System</title>
+	  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	  <link rel="stylesheet" href="/resources/demos/style.css">
+	  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>  
+	  <script>
+	  $(function() {
+			$(".date_rent_start,.date_rent_end").datepicker();
+			$(".date_rent_start,.date_rent_end").datepicker("option", "dateFormat", "yy-mm-dd");
+			$('.number').keyup(function(e){
+			  if (/\D/g.test(this.value))
+			  {
+				// Filter non-digits from input value.
+				this.value = this.value.replace(/\D/g, '');
+			  }
+			});		
+	  });
+				var year = <?php echo $year; ?>;
+				var order_charts = <?php echo $order_charts; ?>;
+				var barChartData = {
+					labels: year,
+					datasets: [{
+						label: 'Order',
+						backgroundColor: "pink",
+						data: order_charts
+					}]
+				};
+
+				window.onload = function() {
+					var ctx = document.getElementById("canvas").getContext("2d");
+					window.myBar = new Chart(ctx, {
+						type: 'bar',
+						data: barChartData,
+						options: {
+							elements: {
+								rectangle: {
+									borderWidth: 2,
+									borderColor: '#c1c1c1',
+									borderSkipped: 'bottom'
+								}
+							},
+							responsive: true,
+							title: {
+								display: true,
+								text: 'Yearly Orders Total'
+							}
+						}
+					});
+				};
+	  </script>
 </head>
 	@inject('helper', \App\Classes\CommonClass::class)
   <h4>Selamat Datang <b>{{Auth::user()->email}}</b>.</h4>
@@ -156,7 +189,7 @@
 				}
 			}
 			?>	<td>
-					<form id="update_the_returned_items" name="update_the_returned_items" method="POST" action="/update_the_returned_items" >
+					<form id="update_the_returned_items" name="update_the_returned_items" method="POST" action="{{ route('update_the_returned_items') }}" >
 						@csrf			
 						<input type="hidden" id="vehicle_license_plate" name="vehicle_license_plate" value="<?=$item["vehicle_license_plate"]?>"></input>						
 						<input type="submit" id="dikembalikan" name="dikembalikan" value="returned"></input>
@@ -266,44 +299,9 @@
 				}				
 			}
 		?>
-	  <br>	<a href="/create_orders_pdf">Download For PDF</a><br>	
+	  <br><a href="{{ route('create_orders_pdf') }}">Download For PDF</a><br>	
 	  <a class="btn btn-info" href="{{ route('export.excel') }}">Download For Excel</a><br>		
 		<canvas id="canvas" height="280" width="600"></canvas>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-		<script>
-			var year = <?php echo $year; ?>;
-			var order_charts = <?php echo $order_charts; ?>;
-			var barChartData = {
-				labels: year,
-				datasets: [{
-					label: 'Order',
-					backgroundColor: "pink",
-					data: order_charts
-				}]
-			};
-
-			window.onload = function() {
-				var ctx = document.getElementById("canvas").getContext("2d");
-				window.myBar = new Chart(ctx, {
-					type: 'bar',
-					data: barChartData,
-					options: {
-						elements: {
-							rectangle: {
-								borderWidth: 2,
-								borderColor: '#c1c1c1',
-								borderSkipped: 'bottom'
-							}
-						},
-						responsive: true,
-						title: {
-							display: true,
-							text: 'Yearly Orders Total'
-						}
-					}
-				});
-			};
-		</script>		
 		<a href="/logout">logout</a>
 		</body>
 </html>
