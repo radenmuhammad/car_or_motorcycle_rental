@@ -34,7 +34,8 @@ class ImportItem implements ToModel
 					'price'  => $row[2],	
 					'distributor'  => $row[3],
 					'updated_at' => Carbon::now()->timezone('Asia/Jakarta')		
-			));							
+			));	
+			return null;			
 		}    
 	}
 }

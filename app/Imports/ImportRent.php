@@ -38,7 +38,8 @@ class ImportRent implements ToModel
 						'months_price' => $row[4],	
 						'years_price' => $row[5],
 						'updated_at' => Carbon::now()->timezone('Asia/Jakarta')
-					));								
+					));		
+			return null;					
 		}					
     }
 }
