@@ -78,7 +78,9 @@ class HomeController extends Controller
         $order_charts = Array();
         foreach ($year as $key => $value) {
             $order_charts[] = Order::getOrderChart($value);
-        }        return view('home',[
+        }        
+		$year = [date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")];
+		return view('home',[
 							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
 							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),
 							'current_orders'=>$requests['count_orders'],

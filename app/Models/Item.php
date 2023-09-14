@@ -14,7 +14,7 @@ class Item extends Model
 	protected $fillable = ['vehicle_license_plate','name_of_items','price','distributor'];	
 		
 	public static function getItemsDataOnlyTen($firstItems=0, $sizeOfPage=10){
-		return DB::table('items')->skip($firstItems)->take($sizeOfPage)->get();
+		return DB::table('items')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
 	}	
 	
 	public static function countItemsPage($sizeOfPage=10){
