@@ -207,6 +207,9 @@
 					echo "<a href='?count_items=".$a."'>".$a."</a>&nbsp;";					
 				}
 			}
+		?>
+	  <br><a href="{{ route('create_items_pdf') }}">Download For PDF</a><br>	
+		<?php
 			if(Auth::user()->role == "Administrator"){
 		?>	  
 		<form action="{{ route('importItem.excel') }}"

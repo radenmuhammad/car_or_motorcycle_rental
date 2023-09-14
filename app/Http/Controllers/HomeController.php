@@ -21,8 +21,6 @@ use PDF;
 class HomeController extends Controller
 {
 	
-
-	
 	public function create_orders_pdf() {
       // retreive all records from db
       $orders = Order::all()->toArray();
@@ -32,6 +30,16 @@ class HomeController extends Controller
       // download PDF file with download method
       return $pdf->download('orders.pdf');
     }
+	
+	public function create_items_pdf(){
+		  // retreive all records from db
+		  $items = Item::all()->toArray();
+		  // share data to view
+		  view()->share('items',$items);
+		  $pdf = PDF::loadView('pdf_view_for_item', $items)->setPaper('a4', 'landscape');;
+		  // download PDF file with download method
+		  return $pdf->download('items.pdf');		
+	}
 	
     public function logout(Request $request){
 		if($request->session()->has('userName')){

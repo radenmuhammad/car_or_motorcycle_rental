@@ -28,6 +28,7 @@ Route::post('update_the_returned_items', [HomeController::class, 'update_the_ret
 Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
 Route::post('update_rent', [HomeController::class, 'update_rent'])->name('update_rent');
 Route::get('create_orders_pdf', [HomeController::class, 'create_orders_pdf'])->name('create_orders_pdf');
+Route::get('create_items_pdf', [HomeController::class, 'create_items_pdf'])->name('create_items_pdf');
 Route::get('register', [RegisterController::class, 'register'])->name('register');
 Route::post('register/action', [RegisterController::class, 'actionregister'])->name('actionregister');
 
