@@ -176,6 +176,7 @@
 		<?php 
 			if(Auth::user()->role == "Administrator"){			
 			?>			
+			<input type="button" name="Delete" value="Delete" onClick="document.location.href='?delete_items=<?=$item["vehicle_license_plate"]?>';"/>
 			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_items=<?=$item["vehicle_license_plate"]?>';"/>
 			<?php 
 			}

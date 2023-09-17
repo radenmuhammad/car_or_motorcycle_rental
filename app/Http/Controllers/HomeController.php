@@ -55,7 +55,8 @@ class HomeController extends Controller
 			'count_rents',
 			'count_orders',
 			'edit_rents',
-			'edit_items'
+			'edit_items',
+			'delete_items'
 		);
 		$sizeOfPage = 3;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
@@ -73,6 +74,12 @@ class HomeController extends Controller
 			$requests['edit_items'] = '';
 		}else{			
 			$edit_items_selected = Item::getItemsSelected($requests['edit_items']);		
+		}
+		$edit_items_selected = Array();
+		if(empty($requests['delete_items'])){
+			$requests['delete_items'] = '';
+		}else{			
+			$edit_items_selected = Item::deleteItemsSelected($requests['delete_items']);		
 		}
 		$users = User::getUsersDataOnlyTen($requests['count_users'], $sizeOfPage);		
 		$count_users = User::countUsersPage($sizeOfPage);						

@@ -68,5 +68,9 @@ class Item extends Model
 	public static function getItemsSelected($vehicle_license_plate ){
 		return (array)DB::table('items')->where('vehicle_license_plate', $vehicle_license_plate)->first();
 	}		
+
+	public static function deleteItemsSelected($vehicle_license_plate){
+		return (array)DB::table('items')->where('vehicle_license_plate', $vehicle_license_plate)->delete();
+	}		
 	
 }
