@@ -77,7 +77,6 @@ class HomeController extends Controller
 		}else{
 			$rent_selected = Rent::getRentsSelected($requests['edit_rents']);				
 		}
-		$rent_selected = Array();
 		if(empty($requests['delete_rents'])){
 			$requests['delete_rents'] = '';
 		}else{
