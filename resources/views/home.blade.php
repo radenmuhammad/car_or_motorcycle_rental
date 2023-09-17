@@ -12,8 +12,7 @@
 	  <script>
 	  $(function() {
 			$(".date_rent_start,.date_rent_end").datepicker();
-			$(".date_rent_start,.date_rent_end").datepicker("option", "dateFormat", "yy-mm-dd");
-			
+			$(".date_rent_start,.date_rent_end").datepicker("option", "dateFormat", "yy-mm-dd");			
 			$(".date_rent_start").change(function(){
 				$(".date_rent_end").change();
 			});
