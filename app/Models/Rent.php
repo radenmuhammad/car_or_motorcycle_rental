@@ -60,5 +60,9 @@ class Rent extends Model
 	public static function getRentsSelected($id_rents){
 		return (array)DB::table('rents')->where('name_of_items', $id_rents)->first();
 	}	
+
+	public static function getDeletedRentsSelected($id_rents){
+		return (array)DB::table('rents')->where('name_of_items', $id_rents)->delete();
+	}	
 				
 }

@@ -56,7 +56,8 @@ class HomeController extends Controller
 			'count_orders',
 			'edit_rents',
 			'edit_items',
-			'delete_items'
+			'delete_items',
+			'delete_rents'
 		);
 		$sizeOfPage = 3;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
@@ -67,7 +68,7 @@ class HomeController extends Controller
 		if(empty($requests['delete_items'])){
 			$requests['delete_items'] = '';
 		}else{			
-			$edit_items_selected = Item::deleteItemsSelected($requests['delete_items']);		
+			Item::deleteItemsSelected($requests['delete_items']);		
 			return Redirect::intended('home');		
 		}
 		$rent_selected = Array();
@@ -76,6 +77,13 @@ class HomeController extends Controller
 		}else{
 			$rent_selected = Rent::getRentsSelected($requests['edit_rents']);				
 		}
+		$rent_selected = Array();
+		if(empty($requests['delete_rents'])){
+			$requests['delete_rents'] = '';
+		}else{
+			Rent::getDeletedRentsSelected($requests['delete_rents']);				
+			return Redirect::intended('home');		
+		}		
 		$edit_items_selected = Array();
 		if(empty($requests['edit_items'])){
 			$requests['edit_items'] = '';
