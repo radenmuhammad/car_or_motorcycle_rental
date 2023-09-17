@@ -117,6 +117,7 @@
 					<input type="hidden" id="<?=$rent['name_of_items']?>_years_price" name="years_price" value="<?=$rent['years_price']?>">															
 					Rent:
 					<input id="<?=$rent['name_of_items']?>_rent_start" name="date_rent_start" class="date_rent_start" type="text" value=""></input>
+					<br>Till:
 					<input id="<?=$rent['name_of_items']?>" name="date_rent_end" class="date_rent_end" type="text" value=""></input>
 					<div id="<?=$rent['name_of_items']?>_rent_calculation"></div>	
 					<br>Address Buyer:

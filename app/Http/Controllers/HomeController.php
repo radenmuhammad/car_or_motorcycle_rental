@@ -159,8 +159,9 @@ class HomeController extends Controller
 			$weeks_order = floor($days_order / 7);			
 		}
 		$days_order = $days_order - ($weeks_order * 7);
-		
-		echo $years_order." years, " .$months_order." months, ".$weeks_order." weeks, ".$days_order." days";	
+		if($requests['date_rent_end']!="" && strtotime($requests['date_rent_end']) > strtotime($requests['date_rent_start'])){
+			echo "Distance: ".$years_order." years, " .$months_order." months, ".$weeks_order." weeks, ".$days_order." days";				
+		}
 	}
 	
 	public function update_the_returned_items(Request $request){
