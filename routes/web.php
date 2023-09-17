@@ -31,6 +31,7 @@ Route::get('create_orders_pdf', [HomeController::class, 'create_orders_pdf'])->n
 Route::get('create_items_pdf', [HomeController::class, 'create_items_pdf'])->name('create_items_pdf');
 Route::get('register', [RegisterController::class, 'register'])->name('register');
 Route::post('register/action', [RegisterController::class, 'actionregister'])->name('actionregister');
+Route::post('calculate_distance_between_two_date', [HomeController::class, 'calculate_distance_between_two_date'])->name('calculate_distance_between_two_date');
 
 Route::controller(ExportExcelController::class)->group(function(){
     Route::get('exportItems', 'exportItems')->name('exportItems.excel');
@@ -39,6 +40,8 @@ Route::controller(ExportExcelController::class)->group(function(){
 	Route::post('importRents','importRents')->name('importRents.excel');
 
 });
+
+
 
 // importRent
 

@@ -13,6 +13,24 @@
 	  $(function() {
 			$(".date_rent_start,.date_rent_end").datepicker();
 			$(".date_rent_start,.date_rent_end").datepicker("option", "dateFormat", "yy-mm-dd");
+			
+			$(".date_rent_start").change(function(){
+				$(".date_rent_end").change();
+			});
+			$(".date_rent_end").change(function(){
+				var id = $(this).attr("id");
+				$.post( "calculate_distance_between_two_date", { 
+					"date_rent_start": $("#"+id+"_rent_start").val(),  
+					"date_rent_end": $(this).val(),
+					"years_price": $("#"+id+"_years_price").val(),
+					"months_price": $("#"+id+"_months_price").val(),
+					"weeks_price": $("#"+id+"_weeks_price").val(),					
+					_token : "{{ csrf_token() }}"
+					})
+				  .done(function( data ) {
+						$("#"+id+"_rent_calculation").html(data);					
+					});
+			});			
 			$('.number').keyup(function(e){
 			  if (/\D/g.test(this.value))
 			  {
@@ -75,8 +93,8 @@
 			<?php 
 			if(Auth::user()->role == "Administrator"){			
 			?>
-			<input type="button" name="Delete" value="Delete" onClick="document.location.href='?delete_rents=<?=$rent["name_of_items"]?>';"/>
 			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_rents=<?=$rent["name_of_items"]?>';"/>
+			<input type="button" name="Delete" value="Delete" onClick="document.location.href='?delete_rents=<?=$rent["name_of_items"]?>';"/>
 			<?php 
 			}
 			?>
@@ -88,17 +106,19 @@
 					?><td><?=$b?></td><?php										
 				}
 			}
+			$rent['name_of_items'] =  str_replace("/","_",str_replace(")","_",str_replace("(","_",str_replace(" ","_",$rent['name_of_items']))));
 			?><td>
 				<form action="{{route('update_orders')}}" method="POST">
 					@csrf
 					<input type="hidden" id="orders_name_of_items" name="name_of_items" value="<?=$rent['name_of_items']?>">					
-					<input type="hidden" id="orders_days_price" name="days_price" value="<?=$rent['days_price']?>">					
-					<input type="hidden" id="orders_weeks_price" name="weeks_price" value="<?=$rent['weeks_price']?>">
-					<input type="hidden" id="orders_months_price" name="months_price" value="<?=$rent['months_price']?>">										
-					<input type="hidden" id="orders_years_price" name="years_price" value="<?=$rent['years_price']?>">															
+					<input type="hidden" id="<?=$rent['name_of_items']?>_days_price" name="days_price" value="<?=$rent['days_price']?>">					
+					<input type="hidden" id="<?=$rent['name_of_items']?>_weeks_price" name="weeks_price" value="<?=$rent['weeks_price']?>">
+					<input type="hidden" id="<?=$rent['name_of_items']?>_months_price" name="months_price" value="<?=$rent['months_price']?>">										
+					<input type="hidden" id="<?=$rent['name_of_items']?>_years_price" name="years_price" value="<?=$rent['years_price']?>">															
 					Rent:
-					<input name="date_rent_start" class="date_rent_start" type="text" value=""></input>
-					<input name="date_rent_end" class="date_rent_end" type="text" value=""></input>				
+					<input id="<?=$rent['name_of_items']?>_rent_start" name="date_rent_start" class="date_rent_start" type="text" value=""></input>
+					<input id="<?=$rent['name_of_items']?>" name="date_rent_end" class="date_rent_end" type="text" value=""></input>
+					<div id="<?=$rent['name_of_items']?>_rent_calculation"></div>	
 					<br>Address Buyer:
 					<input name="address_buyer" type="text" value=""></input><br>												
 					<br>Address Name:
