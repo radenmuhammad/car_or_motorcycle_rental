@@ -75,6 +75,7 @@
 			<?php 
 			if(Auth::user()->role == "Administrator"){			
 			?>
+			<input type="button" name="Delete" value="Delete" onClick="document.location.href='?delete_rents=<?=$rent["name_of_items"]?>';"/>
 			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_rents=<?=$rent["name_of_items"]?>';"/>
 			<?php 
 			}

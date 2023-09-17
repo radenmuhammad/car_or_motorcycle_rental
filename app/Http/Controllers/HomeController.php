@@ -63,6 +63,13 @@ class HomeController extends Controller
 		$requests['count_items']=(empty($requests['count_items'])?0:$requests['count_items'])-1;
 		$requests['count_rents']=(empty($requests['count_rents'])?0:$requests['count_rents'])-1;
 		$requests['count_orders']=(empty($requests['count_orders'])?0:$requests['count_orders'])-1;
+		$edit_items_selected = Array();
+		if(empty($requests['delete_items'])){
+			$requests['delete_items'] = '';
+		}else{			
+			$edit_items_selected = Item::deleteItemsSelected($requests['delete_items']);		
+			return Redirect::intended('home');		
+		}
 		$rent_selected = Array();
 		if(empty($requests['edit_rents'])){
 			$requests['edit_rents'] = '';
@@ -73,13 +80,7 @@ class HomeController extends Controller
 		if(empty($requests['edit_items'])){
 			$requests['edit_items'] = '';
 		}else{			
-			$edit_items_selected = Item::getItemsSelected($requests['edit_items']);		
-		}
-		$edit_items_selected = Array();
-		if(empty($requests['delete_items'])){
-			$requests['delete_items'] = '';
-		}else{			
-			$edit_items_selected = Item::deleteItemsSelected($requests['delete_items']);		
+			$edit_items_selected = Item::getItemsSelected($requests['edit_items']);	
 		}
 		$users = User::getUsersDataOnlyTen($requests['count_users'], $sizeOfPage);		
 		$count_users = User::countUsersPage($sizeOfPage);						
