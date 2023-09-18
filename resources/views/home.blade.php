@@ -147,6 +147,10 @@
 					echo "<a href='?searching_rents=".$searching_rents."&count_rents=".$a."'>".$a."</a>&nbsp;";					
 				}				
 			}
+?>
+	  <br><a href="{{ route('create_rents_pdf') }}">Download For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('exportRents.excel') }}">Download For Excel</a><br>		
+<?php			
 			if(Auth::user()->role == "Administrator"){			
 		?>	
 		<form action="{{ route('importRents.excel') }}"

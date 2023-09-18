@@ -40,6 +40,16 @@ class HomeController extends Controller
 		  // download PDF file with download method
 		  return $pdf->download('items.pdf');		
 	}
+
+	public function create_rents_pdf(){
+		  // retreive all records from db
+		  $rents = Rent::all()->toArray();
+		  // share data to view
+		  view()->share('rents',$rents);
+		  $pdf = PDF::loadView('pdf_view_for_rent', $rents)->setPaper('a4', 'landscape');;
+		  // download PDF file with download method
+		  return $pdf->download('items.pdf');		
+	}
 	
     public function logout(Request $request){
 		if($request->session()->has('userName')){
