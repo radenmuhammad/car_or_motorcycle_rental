@@ -180,7 +180,11 @@
 	<?php 
 		}
 	?>
-	  Items:<br>	  
+	  Items:<br>	
+	  <form action="{{route('home') }}" method="GET">
+		<input type="text" id="searching_items" name="searching_items" value="<?=$searching_items?>"/> 
+		<input type="submit" id="searching_button" name="searching_button" value="Search"/>	 
+	  </form>
 	  <table border=1>
 	  <?php
 		$header = true;	  
@@ -227,7 +231,7 @@
 				if($a==$current_items+1){
 					echo $a."&nbsp;";										
 				}else{
-					echo "<a href='?count_items=".$a."'>".$a."</a>&nbsp;";					
+					echo "<a href='?searching_items=".$searching_items."&count_items=".$a."'>".$a."</a>&nbsp;";					
 				}
 			}
 		?>

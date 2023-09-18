@@ -57,13 +57,15 @@ class HomeController extends Controller
 			'edit_rents',
 			'edit_items',
 			'delete_items',
-			'delete_rents'
+			'delete_rents',
+			'searching_items'
 		);
-		$sizeOfPage = 3;
+		$sizeOfPage = 1;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
 		$requests['count_items']=(empty($requests['count_items'])?0:$requests['count_items'])-1;
 		$requests['count_rents']=(empty($requests['count_rents'])?0:$requests['count_rents'])-1;
 		$requests['count_orders']=(empty($requests['count_orders'])?0:$requests['count_orders'])-1;
+		$requests['searching_items']=(empty($requests['searching_items'])?'':$requests['searching_items']);
 		$edit_items_selected = Array();
 		if(empty($requests['delete_items'])){
 			$requests['delete_items'] = '';
@@ -91,8 +93,8 @@ class HomeController extends Controller
 		}
 		$users = User::getUsersDataOnlyTen($requests['count_users'], $sizeOfPage);		
 		$count_users = User::countUsersPage($sizeOfPage);						
-		$items = Item::getItemsDataOnlyTen($requests['count_items'], $sizeOfPage);
-		$count_items = Item::countItemsPage($sizeOfPage);
+		$items = Item::getItemsDataOnlyTen($requests['searching_items'],$requests['count_items'], $sizeOfPage);
+		$count_items = Item::countItemsPage($requests['searching_items'],$sizeOfPage);
 		$rents = Rent::getRentsDataOnlyTen($requests['count_rents'], $sizeOfPage);
 		$count_rents = Rent::countRentsPage($sizeOfPage);		
 		$orders = Order::getOrdersDataOnlyTen($requests['count_orders'], $sizeOfPage);
@@ -103,7 +105,7 @@ class HomeController extends Controller
             $order_charts[] = Order::getOrderChart($value);
         }        
 		$year = [date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")];
-		return view('home',[
+		return view('home',['searching_items'=>$requests['searching_items'],
 							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
 							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),
 							'current_orders'=>$requests['count_orders'],
@@ -175,7 +177,7 @@ class HomeController extends Controller
 										  ]);				
 		}
 	}
-	
+		
 	public function update_the_returned_items(Request $request){
 		$requests = $request->only('vehicle_license_plate');
 		Item::updateAvailableTrueFromItemsByVehicleLicensePlate($requests['vehicle_license_plate']);				

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class Item extends Model
 {
@@ -13,12 +14,23 @@ class Item extends Model
 
 	protected $fillable = ['vehicle_license_plate','name_of_items','price','distributor'];	
 		
-	public static function getItemsDataOnlyTen($firstItems=0, $sizeOfPage=10){
-		return DB::table('items')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
+	public static function getItemsDataOnlyTen($searching_items,$firstItems=0, $sizeOfPage=10){
+		$columns = Schema::getColumnListing('items');
+		$query = Item::query();		
+		foreach($columns as $column){
+			$query->orWhere($column, 'LIKE', '%' . $searching_items . '%');
+		}
+		return $query->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at','ASC')->get()->toArray();
 	}	
 	
-	public static function countItemsPage($sizeOfPage=10){
-		return ceil(DB::table('items')->count()/$sizeOfPage);		
+	public static function countItemsPage($searching_items,$sizeOfPage=10){
+		$columns = Schema::getColumnListing('items');
+		$query = Item::query();		
+		foreach($columns as $column){
+			$query->orWhere($column, 'LIKE', '%' . $searching_items . '%');
+		}		
+		$total=count($query->get()->toArray());
+		return ceil($total/$sizeOfPage);		
 	}
 	
 	public static function insertItems($requests){
@@ -65,8 +77,10 @@ class Item extends Model
                 ->update(['available' => true]);	
 	}
 
-	public static function getItemsSelected($vehicle_license_plate ){
-		return (array)DB::table('items')->where('vehicle_license_plate', $vehicle_license_plate)->first();
+	public static function getItemsSelected($vehicle_license_plate){
+		return (array)DB::table('items')
+		->where('vehicle_license_plate', $vehicle_license_plate)
+		->first();
 	}		
 
 	public static function deleteItemsSelected($vehicle_license_plate){
