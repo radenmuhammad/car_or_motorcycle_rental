@@ -74,7 +74,7 @@
 	  </script>
 </head>
 	@inject('helper', \App\Classes\CommonClass::class)
-  <h4>Selamat Datang <b>{{Auth::user()->email}}</b>.</h4>
+  <h4>Welcome <b>{{Auth::user()->email}}</b>.</h4>
 	  Rents:<br>
 	  <table border=1>
 	  <?php 
@@ -298,7 +298,7 @@
 	  <form action="{{route('home') }}" method="GET">
 		<input type="text" id="searching_orders" name="searching_orders" value="<?=$searching_orders?>"/> 
 		<input type="submit" id="searching_button" name="searching_button" value="Search"/>	 
-	  </form>	  
+	  </form>
 	  <table border=1>
 	  <?php
 		$header = true;	  
@@ -330,7 +330,7 @@
 				if($a==$current_orders+1){
 					echo $a."&nbsp;";										
 				}else{
-					echo "<a href='?count_orders=".$a."'>".$a."</a>&nbsp;";					
+					echo "<a href='?searching_orders=".$searching_orders."&count_orders=".$a."'>".$a."</a>&nbsp;";					
 				}				
 			}
 		?>
