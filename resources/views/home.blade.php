@@ -32,8 +32,7 @@
 					});
 			});			
 			$('.number').keyup(function(e){
-			  if (/\D/g.test(this.value))
-			  {
+			  if (/\D/g.test(this.value)){
 				// Filter non-digits from input value.
 				this.value = this.value.replace(/\D/g, '');
 			  }
@@ -131,7 +130,7 @@
 					<br>Address Name:
 					<input name="address_name" type="text" value=""></input><br>																
 					<br>Address Phone:
-					<input id="address_phone" name="address_phone" type="text" value=""></input><br>																				
+					<input id="address_phone" class="number" name="address_phone" type="text" value=""></input><br>																				
 					<input id="submit" name="submit" type="submit" value="Rent"></input>								
 				</form>
 			  </td>
