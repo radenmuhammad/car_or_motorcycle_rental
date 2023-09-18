@@ -62,7 +62,7 @@ class HomeController extends Controller
 			'searching_orders',
 			'searching_rents'
 		);
-		$sizeOfPage = 1;
+		$sizeOfPage = 10;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
 		$requests['count_items']=(empty($requests['count_items'])?0:$requests['count_items'])-1;
 		$requests['count_rents']=(empty($requests['count_rents'])?0:$requests['count_rents'])-1;
