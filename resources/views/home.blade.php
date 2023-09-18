@@ -77,7 +77,7 @@
   <h4>Welcome <b>{{Auth::user()->email}}</b>.</h4>
 	  <input type="button" name="rents" value="Clear Search" onClick="document.location.href='{{route('home')}}';"/>
 	  <br>
-	  Rents:<br>
+	  Rental Data:<br>
 	  <form action="{{route('home') }}" method="GET">
 		<input type="text" id="searching_rents" name="searching_rents" value="<?=$searching_rents?>"/> 
 		<input type="submit" id="searching_button" name="searching_button" value="Search"/>	 
@@ -148,21 +148,21 @@
 				}				
 			}
 ?>
-	  <br><a href="{{ route('create_rents_pdf') }}">Download For PDF</a><br>	
-	  <a class="btn btn-info" href="{{ route('exportRents.excel') }}">Download For Excel</a><br>		
+	  <br><a href="{{ route('create_rents_pdf') }}">Download the rental data For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('exportRents.excel') }}">Download the rental data For Excel</a><br>		
 <?php			
 			if(Auth::user()->role == "Administrator"){			
 		?>	
 		<form action="{{ route('importRents.excel') }}"
 			  method="POST"
 			  enctype="multipart/form-data">
-			  Upload Rent Data:
+			  Upload Rental Data:
 			@csrf
 			<input type="file" name="file"
 				   class="form-control">
 			<br>
 			<button class="btn btn-success">
-				  Import Rent Data
+				  Import Rental Data
 			   </button>
 		</form>		
 	<form action="{{route('update_rents')}}" method="POST">
@@ -245,8 +245,8 @@
 				}
 			}
 		?>
-	  <br><a href="{{ route('create_items_pdf') }}">Download For PDF</a><br>	
-	  <a class="btn btn-info" href="{{ route('exportItems.excel') }}">Download For Excel</a><br>		
+	  <br><a href="{{ route('create_items_pdf') }}">Download The Items Data For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('exportItems.excel') }}">Download The Items Data For Excel</a><br>		
 		<?php
 			if(Auth::user()->role == "Administrator"){
 		?>	  
@@ -344,8 +344,8 @@
 				}				
 			}
 		?>
-	  <br><a href="{{ route('create_orders_pdf') }}">Download For PDF</a><br>	
-	  <a class="btn btn-info" href="{{ route('exportOrders.excel') }}">Download For Excel</a><br>		
+	  <br><a href="{{ route('create_orders_pdf') }}">Download The Orders Data For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('exportOrders.excel') }}">Download The Orders Data For Excel</a><br>		
 		<canvas id="canvas" height="280" width="600"></canvas>
 		<a href="/logout">logout</a>
 		</body>
