@@ -48,7 +48,7 @@ class HomeController extends Controller
 		  view()->share('rents',$rents);
 		  $pdf = PDF::loadView('pdf_view_for_rent', $rents)->setPaper('a4', 'landscape');;
 		  // download PDF file with download method
-		  return $pdf->download('items.pdf');		
+		  return $pdf->download('rents.pdf');		
 	}
 	
     public function logout(Request $request){
@@ -72,7 +72,7 @@ class HomeController extends Controller
 			'searching_orders',
 			'searching_rents'
 		);
-		$sizeOfPage = 10;
+		$sizeOfPage = 5;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
 		$requests['count_items']=(empty($requests['count_items'])?0:$requests['count_items'])-1;
 		$requests['count_rents']=(empty($requests['count_rents'])?0:$requests['count_rents'])-1;
