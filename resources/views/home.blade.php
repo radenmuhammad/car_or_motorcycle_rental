@@ -75,7 +75,7 @@
 </head>
 	@inject('helper', \App\Classes\CommonClass::class)
   <h4>Welcome <b>{{Auth::user()->email}}</b>.</h4>
-	  <input type="button" name="rents" value="Clear Search" onClick="document.location.href='{{route('home')}}';"/>
+	  <input type="button" name="rents" value="Clear Searching" onClick="document.location.href='{{route('home')}}';"/>
 	  <br>
 	  Rental Data:<br>
 	  <form action="{{route('home') }}" method="GET">
