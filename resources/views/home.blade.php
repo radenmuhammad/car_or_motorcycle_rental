@@ -75,6 +75,8 @@
 </head>
 	@inject('helper', \App\Classes\CommonClass::class)
   <h4>Welcome <b>{{Auth::user()->email}}</b>.</h4>
+	  <input type="button" name="rents" value="Clear Search" onClick="document.location.href='{{route('home')}}';"/>
+	  <br>
 	  Rents:<br>
 	  <form action="{{route('home') }}" method="GET">
 		<input type="text" id="searching_rents" name="searching_rents" value="<?=$searching_rents?>"/> 
@@ -146,7 +148,19 @@
 				}				
 			}
 			if(Auth::user()->role == "Administrator"){			
-		?>	  
+		?>	
+		<form action="{{ route('importRents.excel') }}"
+			  method="POST"
+			  enctype="multipart/form-data">
+			  Upload Rent Data:
+			@csrf
+			<input type="file" name="file"
+				   class="form-control">
+			<br>
+			<button class="btn btn-success">
+				  Import Rent Data
+			   </button>
+		</form>		
 	<form action="{{route('update_rents')}}" method="POST">
 		@csrf	
 	  <?php 
@@ -168,19 +182,7 @@
 		}
 	  ?>
 		<input id="submit" name="submit" type="submit" value="submit"></input><br>									  
-	</form>	
-		<form action="{{ route('importRents.excel') }}"
-			  method="POST"
-			  enctype="multipart/form-data">
-			  Upload Rent Data:
-			@csrf
-			<input type="file" name="file"
-				   class="form-control">
-			<br>
-			<button class="btn btn-success">
-				  Import Rent Data
-			   </button>
-		</form>			
+	</form>		
 	<?php 
 		}
 	?>
