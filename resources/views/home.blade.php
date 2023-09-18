@@ -23,7 +23,8 @@
 					"date_rent_end": $(this).val(),
 					"years_price": $("#"+id+"_years_price").val(),
 					"months_price": $("#"+id+"_months_price").val(),
-					"weeks_price": $("#"+id+"_weeks_price").val(),					
+					"weeks_price": $("#"+id+"_weeks_price").val(),
+					"days_price": $("#"+id+"_days_price").val(),	
 					_token : "{{ csrf_token() }}"
 					})
 				  .done(function( data ) {

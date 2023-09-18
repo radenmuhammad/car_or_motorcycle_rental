@@ -128,7 +128,8 @@ class HomeController extends Controller
 								   'date_rent_end',
 								   'years_price',
 								   'weeks_price',								   
-								   'months_price');	
+								   'months_price',
+								   'days_price');	
 		$date1 = strtotime($requests['date_rent_start']);
 		$date2 = strtotime($requests['date_rent_end']);
 		$diff = abs($date2 - $date1);
@@ -159,8 +160,19 @@ class HomeController extends Controller
 			$weeks_order = floor($days_order / 7);			
 		}
 		$days_order = $days_order - ($weeks_order * 7);
+				$total_of_order = ($years_order * $requests['years_price']) +
+					   ($months_order * $requests['months_price']) +	
+					   ($weeks_order * $requests['weeks_price']) +	
+					   ($days_order * $requests['days_price'])					   
+		;
 		if($requests['date_rent_end']!="" && strtotime($requests['date_rent_end']) > strtotime($requests['date_rent_start'])){
-			echo "Distance: ".$years_order." years, " .$months_order." months, ".$weeks_order." weeks, ".$days_order." days";				
+			return view("show_calculate",[
+										   "years_order"=>$years_order,
+										   "months_order"=>$months_order,										   
+										   "weeks_order"=>$weeks_order,
+										   "days_order"=>$days_order,
+										   "total_of_order"=>$total_of_order
+										  ]);				
 		}
 	}
 	
