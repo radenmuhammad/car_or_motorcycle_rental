@@ -59,7 +59,8 @@ class HomeController extends Controller
 			'delete_items',
 			'delete_rents',
 			'searching_items',
-			'searching_orders'
+			'searching_orders',
+			'searching_rents'
 		);
 		$sizeOfPage = 1;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
@@ -68,6 +69,7 @@ class HomeController extends Controller
 		$requests['count_orders']=(empty($requests['count_orders'])?0:$requests['count_orders'])-1;
 		$requests['searching_items']=(empty($requests['searching_items'])?'':$requests['searching_items']);
 		$requests['searching_orders']=(empty($requests['searching_orders'])?'':$requests['searching_orders']);
+		$requests['searching_rents']=(empty($requests['searching_rents'])?'':$requests['searching_rents']);
 		$edit_items_selected = Array();
 		if(empty($requests['delete_items'])){
 			$requests['delete_items'] = '';
@@ -97,8 +99,8 @@ class HomeController extends Controller
 		$count_users = User::countUsersPage($sizeOfPage);						
 		$items = Item::getItemsDataOnlyTen($requests['searching_items'],$requests['count_items'], $sizeOfPage);
 		$count_items = Item::countItemsPage($requests['searching_items'],$sizeOfPage);
-		$rents = Rent::getRentsDataOnlyTen($requests['count_rents'], $sizeOfPage);
-		$count_rents = Rent::countRentsPage($sizeOfPage);		
+		$rents = Rent::getRentsDataOnlyTen($requests['searching_rents'],$requests['count_rents'], $sizeOfPage);
+		$count_rents = Rent::countRentsPage($requests['searching_rents'],$sizeOfPage);		
 		$orders = Order::getOrdersDataOnlyTen($requests['searching_orders'],$requests['count_orders'], $sizeOfPage);
 		$count_orders = Order::countOrdersPage($requests['searching_orders'],$sizeOfPage);
 		$year = [date("Ym",strtotime("-4 month")),date("Ym",strtotime("-3 month")),date("Ym",strtotime("-2 month")),date("Ym",strtotime("-1 month")),date("Ym")];
@@ -107,7 +109,8 @@ class HomeController extends Controller
             $order_charts[] = Order::getOrderChart($value);
         }        
 		$year = [date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")];
-		return view('home',['searching_items'=>$requests['searching_items'],
+		return view('home',['searching_rents'=>$requests['searching_rents'],
+		                    'searching_items'=>$requests['searching_items'],
 							'searching_orders'=>$requests['searching_orders'],	
 							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
 							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),

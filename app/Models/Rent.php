@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class Rent extends Model
 {
@@ -15,12 +16,23 @@ class Rent extends Model
 	
     use HasFactory;
 	
-	public static function getRentsDataOnlyTen($firstItems=0, $sizeOfPage=10){
-		return DB::table('rents')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
+	public static function getRentsDataOnlyTen($searching_rents,$firstItems=0, $sizeOfPage=10){
+		$columns = Schema::getColumnListing('rents');
+		$query = Rent::query();		
+		foreach($columns as $column){
+			$query->orWhere($column, 'LIKE', '%' . $searching_rents . '%');
+		}
+		return $query->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get()->toArray();
 	}	
 
-	public static function countRentsPage($sizeOfPage=10){
-		return ceil(DB::table('rents')->count()/$sizeOfPage);		
+	public static function countRentsPage($searching_rents,$sizeOfPage=10){
+		$columns = Schema::getColumnListing('rents');
+		$query = Rent::query();		
+		foreach($columns as $column){
+			$query->orWhere($column, 'LIKE', '%' . $searching_rents . '%');
+		}		
+		$total=count($query->get()->toArray());		
+		return ceil($total/$sizeOfPage);		
 	}
 	
 	public static function updateRents($requests){			

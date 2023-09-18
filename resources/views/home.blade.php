@@ -76,6 +76,10 @@
 	@inject('helper', \App\Classes\CommonClass::class)
   <h4>Welcome <b>{{Auth::user()->email}}</b>.</h4>
 	  Rents:<br>
+	  <form action="{{route('home') }}" method="GET">
+		<input type="text" id="searching_rents" name="searching_rents" value="<?=$searching_rents?>"/> 
+		<input type="submit" id="searching_button" name="searching_button" value="Search"/>	 
+	  </form>	  
 	  <table border=1>
 	  <?php 
 		$header = true;
@@ -138,7 +142,7 @@
 				if($a==$current_rents+1){
 					echo $a."&nbsp;";										
 				}else{
-					echo "<a href='?count_rents=".$a."'>".$a."</a>&nbsp;";					
+					echo "<a href='?searching_rents=".$searching_rents."&count_rents=".$a."'>".$a."</a>&nbsp;";					
 				}				
 			}
 			if(Auth::user()->role == "Administrator"){			
