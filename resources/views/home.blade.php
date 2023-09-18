@@ -148,7 +148,7 @@
 				}				
 			}
 ?>
-	  <br><a href="{{ route('create_rents_pdf') }}">Download the rental data For PDF</a><br>	
+	  <br><a href="{{ route('create_rents_pdf') }}">Download the Rental Data For PDF</a><br>	
 	  <a class="btn btn-info" href="{{ route('exportRents.excel') }}">Download the rental data For Excel</a><br>		
 <?php			
 			if(Auth::user()->role == "Administrator"){			
