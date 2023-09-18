@@ -295,6 +295,10 @@
 			}
 		?>
 	  Orders:<br>
+	  <form action="{{route('home') }}" method="GET">
+		<input type="text" id="searching_orders" name="searching_orders" value="<?=$searching_orders?>"/> 
+		<input type="submit" id="searching_button" name="searching_button" value="Search"/>	 
+	  </form>	  
 	  <table border=1>
 	  <?php
 		$header = true;	  

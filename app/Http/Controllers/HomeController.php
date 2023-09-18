@@ -58,7 +58,8 @@ class HomeController extends Controller
 			'edit_items',
 			'delete_items',
 			'delete_rents',
-			'searching_items'
+			'searching_items',
+			'searching_orders'
 		);
 		$sizeOfPage = 1;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
@@ -66,6 +67,7 @@ class HomeController extends Controller
 		$requests['count_rents']=(empty($requests['count_rents'])?0:$requests['count_rents'])-1;
 		$requests['count_orders']=(empty($requests['count_orders'])?0:$requests['count_orders'])-1;
 		$requests['searching_items']=(empty($requests['searching_items'])?'':$requests['searching_items']);
+		$requests['searching_orders']=(empty($requests['searching_orders'])?'':$requests['searching_orders']);
 		$edit_items_selected = Array();
 		if(empty($requests['delete_items'])){
 			$requests['delete_items'] = '';
@@ -97,8 +99,8 @@ class HomeController extends Controller
 		$count_items = Item::countItemsPage($requests['searching_items'],$sizeOfPage);
 		$rents = Rent::getRentsDataOnlyTen($requests['count_rents'], $sizeOfPage);
 		$count_rents = Rent::countRentsPage($sizeOfPage);		
-		$orders = Order::getOrdersDataOnlyTen($requests['count_orders'], $sizeOfPage);
-		$count_orders = Order::countOrdersPage($sizeOfPage);
+		$orders = Order::getOrdersDataOnlyTen($requests['searching_orders'],$requests['count_orders'], $sizeOfPage);
+		$count_orders = Order::countOrdersPage($requests['searching_orders'],$sizeOfPage);
 		$year = [date("Ym",strtotime("-4 month")),date("Ym",strtotime("-3 month")),date("Ym",strtotime("-2 month")),date("Ym",strtotime("-1 month")),date("Ym")];
         $order_charts = Array();
         foreach ($year as $key => $value) {
@@ -106,6 +108,7 @@ class HomeController extends Controller
         }        
 		$year = [date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")];
 		return view('home',['searching_items'=>$requests['searching_items'],
+							'searching_orders'=>$requests['searching_orders'],	
 							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
 							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),
 							'current_orders'=>$requests['count_orders'],

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class Order extends Model
 {
@@ -15,12 +16,23 @@ class Order extends Model
 		return Order::whereRaw("DATE_FORMAT(date_rent_start, '%Y%m')='".$value."'")->count();	
 	}
 	
-	public static function getOrdersDataOnlyTen($firstItems=0, $sizeOfPage=10){
-		return DB::table('orders')->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get();
+	public static function getOrdersDataOnlyTen($searching_orders,$firstItems=0, $sizeOfPage=10){
+		$columns = Schema::getColumnListing('orders');
+		$query = Order::query();		
+		foreach($columns as $column){
+			$query->orWhere($column, 'LIKE', '%' . $searching_orders . '%');
+		}
+		return $query->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at','ASC')->get()->toArray();
 	}	
 
-	public static function countOrdersPage($sizeOfPage=10){
-		return ceil(DB::table('orders')->count()/$sizeOfPage);		
+	public static function countOrdersPage($searching_orders,$sizeOfPage=10){
+		$columns = Schema::getColumnListing('orders');
+		$query = Order::query();		
+		foreach($columns as $column){
+			$query->orWhere($column, 'LIKE', '%' . $searching_orders . '%');
+		}		
+		$total=count($query->get()->toArray());
+		return ceil($total/$sizeOfPage);			
 	}
 	
 	public static function insertOrders($requests){
