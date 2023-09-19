@@ -67,7 +67,7 @@ class HomeController extends Controller
 			'edit_renteds',
 			'edit_items',
 			'delete_items',
-			'delete_rented',
+			'delete_renteds',
 			'searching_items',
 			'searching_orders',
 			'searching_renteds'
