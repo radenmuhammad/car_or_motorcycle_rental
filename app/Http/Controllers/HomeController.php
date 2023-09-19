@@ -108,11 +108,10 @@ class HomeController extends Controller
         foreach ([date("Ym",strtotime("-4 month")),date("Ym",strtotime("-3 month")),date("Ym",strtotime("-2 month")),date("Ym",strtotime("-1 month")),date("Ym")] as $key => $value) {
             $order_charts[] = Order::getOrderChart($value);
         }        
-		$year = [date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")];
 		return view('home',['searching_renteds'=>$requests['searching_renteds'],
 		                    'searching_items'=>$requests['searching_items'],
 							'searching_orders'=>$requests['searching_orders'],	
-							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
+							'year'=>json_encode([date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")],JSON_NUMERIC_CHECK),
 							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),
 							'current_orders'=>$requests['count_orders'],
 		                    'current_renteds'=>$requests['count_renteds'],
