@@ -15,7 +15,7 @@ return new class extends Migration
 			$table->string('image')->nullable();
 			$table->string('name_of_items',50)->primary();
 			$table->string('type_of_items');			
-            $table->integer('days_price');			
+            $table->integer('days_price')->comment('');			
             $table->integer('weeks_price')->comment('(for 7 days)');
             $table->integer('months_price')->comment('(for 30 days)');	
             $table->integer('years_price');			
