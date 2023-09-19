@@ -99,7 +99,7 @@
 			if(Auth::user()->role == "Administrator"){			
 			?>
 			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_renteds=<?=$rent["name_of_items"]?>';"/>
-			<input type="button" name="Delete" value="Delete" onClick="document.location.href='?delete_renteds=<?=$rent["name_of_items"]?>&image=<?=$rent["image"]?>';"/>
+			<input type="button" name="Delete" value="Delete" onClick="document.location.href='?delete_renteds=<?=$rent["name_of_items"]?>&image_renteds=<?=$rent["image"]?>';"/>
 			<?php 
 			}
 			?>

@@ -17,6 +17,7 @@ use App\Models\Rented;
 use App\Models\Order;
 use App\Charts\UserChart;
 use PDF;
+use File;
 
 class HomeController extends Controller
 {
@@ -59,9 +60,11 @@ class HomeController extends Controller
 			'edit_items',
 			'delete_items',
 			'delete_renteds',
+			'delete_renteds',
 			'searching_items',
 			'searching_orders',
-			'searching_renteds'
+			'searching_renteds',
+			'image_renteds'
 		);
 		$sizeOfPage = 5;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
@@ -86,7 +89,11 @@ class HomeController extends Controller
 		}
 		if(empty($requests['delete_renteds'])){
 			$requests['delete_renteds'] = '';
-		}else{
+		}else{			
+			$image_path = public_path('storage/images/'.$requests['image_renteds']);
+			if(File::exists($image_path)) {
+				File::delete($image_path);
+			}			
 			Rented::getDeletedRentedsSelected($requests['delete_renteds']);				
 			return Redirect::intended('home');		
 		}		
