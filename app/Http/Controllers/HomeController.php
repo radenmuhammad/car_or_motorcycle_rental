@@ -22,32 +22,23 @@ class HomeController extends Controller
 {
 	
 	public function create_orders_pdf() {
-      // retreive all records from db
       $orders = Order::all()->toArray();
-      // share data to view
       view()->share('orders',$orders);
       $pdf = PDF::loadView('pdf_view_for_order', $orders)->setPaper('a4', 'landscape');;
-      // download PDF file with download method
       return $pdf->download('orders.pdf');
     }
 	
 	public function create_items_pdf(){
-		  // retreive all records from db
 		  $items = Item::all()->toArray();
-		  // share data to view
 		  view()->share('items',$items);
 		  $pdf = PDF::loadView('pdf_view_for_item', $items)->setPaper('a4', 'landscape');;
-		  // download PDF file with download method
 		  return $pdf->download('items.pdf');		
 	}
 
 	public function create_renteds_pdf(){
-		  // retreive all records from db
 		  $renteds = Rented::all()->toArray();
-		  // share data to view
 		  view()->share('renteds',$renteds);
 		  $pdf = PDF::loadView('pdf_view_for_rented', $renteds)->setPaper('a4', 'landscape');;
-		  // download PDF file with download method
 		  return $pdf->download('renteds.pdf');		
 	}
 	
