@@ -104,9 +104,8 @@ class HomeController extends Controller
 		$count_renteds = Rented::countRentedsPage($requests['searching_renteds'],$sizeOfPage);		
 		$orders = Order::getOrdersDataOnlyTen($requests['searching_orders'],$requests['count_orders'], $sizeOfPage);
 		$count_orders = Order::countOrdersPage($requests['searching_orders'],$sizeOfPage);
-		$year = [date("Ym",strtotime("-4 month")),date("Ym",strtotime("-3 month")),date("Ym",strtotime("-2 month")),date("Ym",strtotime("-1 month")),date("Ym")];
         $order_charts = Array();
-        foreach ($year as $key => $value) {
+        foreach ([date("Ym",strtotime("-4 month")),date("Ym",strtotime("-3 month")),date("Ym",strtotime("-2 month")),date("Ym",strtotime("-1 month")),date("Ym")] as $key => $value) {
             $order_charts[] = Order::getOrderChart($value);
         }        
 		$year = [date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")];
