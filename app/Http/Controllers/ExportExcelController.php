@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Exports\ExportOrder;
 use App\Exports\ExportItem;
-use App\Exports\ExportRent;
+use App\Exports\ExportRented;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportItem;
 use App\Imports\ImportRent;
@@ -24,9 +24,9 @@ class ExportExcelController extends Controller
         return Excel::download(new ExportItem, 'items.xlsx');
     }    
 
-    public function exportRents() 
+    public function exportRenteds() 
     {
-        return Excel::download(new ExportRent, 'rents.xlsx');
+        return Excel::download(new ExportRented, 'renteds.xlsx');
     }    
 
     public function exportOrders() 

@@ -39,7 +39,7 @@ class Rented extends Model
 		$items = (array)DB::table('renteds')
 			->where('name_of_items', $requests['old_name_of_items'])->first();
 		if(empty($requests['old_name_of_items'])){
-		$items = (array)DB::table('rented')
+		$items = (array)DB::table('renteds')
 			->where('name_of_items', $requests['name_of_items'])->first();			
 		}			
 		if(empty($items)){					
@@ -50,7 +50,8 @@ class Rented extends Model
 					'days_price' => $requests['days_price'],
 					'weeks_price' => $requests['weeks_price'],
 					'months_price' => $requests['months_price'],	
-					'years_price' => $requests['years_price'],
+					'years_price' => $requests['years_price'],	
+					'image' => $requests['image'],
 					'created_at' => Carbon::now()->timezone('Asia/Jakarta')
 				)
 			);
@@ -63,7 +64,8 @@ class Rented extends Model
 						'days_price' => $requests['days_price'],
 						'weeks_price' => $requests['weeks_price'],
 						'months_price' => $requests['months_price'],	
-						'years_price' => $requests['years_price'],
+						'years_price' => $requests['years_price'],	
+						'image' => $requests['image'],
 						'updated_at' => Carbon::now()->timezone('Asia/Jakarta')
 					));					
 		}

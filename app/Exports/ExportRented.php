@@ -2,25 +2,25 @@
 
 namespace App\Exports;
 
-use App\Models\Rent;
+use App\Models\Rented;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class ExportRent implements FromCollection, WithHeadings
+class ExportRented implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return Rent::all();
+        return Rented::all();
     }
 
     public function headings(): array
     {
-		return Schema::getColumnListing('rents');
+		return Schema::getColumnListing('renteds');
     }	
 	
 }

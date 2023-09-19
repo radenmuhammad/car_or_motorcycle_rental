@@ -27,7 +27,7 @@ Route::post('update_items', [HomeController::class, 'update_items'])->name('upda
 Route::post('update_the_returned_items', [HomeController::class, 'update_the_returned_items'])->name('update_the_returned_items');
 Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
 Route::get('create_orders_pdf', [HomeController::class, 'create_orders_pdf'])->name('create_orders_pdf');
-Route::get('create_rents_pdf', [HomeController::class, 'create_rents_pdf'])->name('create_rents_pdf');
+Route::get('create_renteds_pdf', [HomeController::class, 'create_renteds_pdf'])->name('create_renteds_pdf');
 Route::get('create_items_pdf', [HomeController::class, 'create_items_pdf'])->name('create_items_pdf');
 Route::get('register', [RegisterController::class, 'register'])->name('register');
 Route::post('register/action', [RegisterController::class, 'actionregister'])->name('actionregister');
@@ -37,7 +37,7 @@ Route::post('calculate_distance_between_two_date', [HomeController::class, 'calc
 Route::controller(ExportExcelController::class)->group(function(){
     Route::get('exportItems', 'exportItems')->name('exportItems.excel');
     Route::get('exportOrders', 'exportOrders')->name('exportOrders.excel');
-    Route::get('exportRents', 'exportRents')->name('exportRents.excel');
+    Route::get('exportRenteds', 'exportRenteds')->name('exportRenteds.excel');
 	Route::post('importItems','importItems')->name('importItems.excel');
 	Route::post('importRents','importRents')->name('importRents.excel');
 

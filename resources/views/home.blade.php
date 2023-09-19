@@ -88,7 +88,7 @@
 			$rent = (array)$rent;
 			if($header){
 				?><tr><td></td><?php
-				foreach ($rent as $a => $b){
+				foreach ($rent as $a => $b){				
 					?><td><?=str_replace('_', ' ', $a)." ".$helper->getRentedsTableComment($a)?></td><?php
 				}
 				?><td>&nbsp;</td></tr><?php	
@@ -105,7 +105,13 @@
 			?>
 			</}td><?php
 			foreach ($rent as $a => $b){
-				if(str_contains($a, 'price')){
+				if(str_contains($a, 'image')){
+					if($b!=''){
+						?><td><img height="500px" width="500px" src="<?=asset('storage/images/'.$b)?>"/></td><?php											
+					}else{
+						?><td>&nbsp;</td><?php																	
+					}
+				}else if(str_contains($a, 'price')){
 					?><td><?=$helper->rupiah($b)?></td><?php					
 				}else{
 					?><td><?=$b?></td><?php										
@@ -147,8 +153,8 @@
 				}				
 			}
 ?>
-	  <br><a href="{{ route('create_rents_pdf') }}">Download the Rented Data For PDF</a><br>	
-	  <a class="btn btn-info" href="{{ route('exportRents.excel') }}">Download the Rented Data For Excel</a><br>		
+	  <br><a href="{{ route('create_renteds_pdf') }}">Download the Rented Data For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('exportRenteds.excel') }}">Download the Rented Data For Excel</a><br>		
 <?php			
 			if(Auth::user()->role == "Administrator"){			
 		?>	
@@ -164,7 +170,7 @@
 				  Import Rented Data
 			   </button>
 		</form>		
-	<form action="{{route('update_renteds')}}" method="POST">
+	<form action="{{route('update_renteds')}}" method="POST" enctype="multipart/form-data">
 		@csrf	
 	  <?php 
 	  // old_name_of_items
@@ -177,6 +183,8 @@
 					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" type="text" value="<?=$rent_selected[$a]?>"></input><br><?php										
 				}else if(str_contains($a, 'price')){
 					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" class="number" type="text" value="<?=$rent_selected[$a]?>"></input><br><?php					
+				}else if(str_contains($a, 'image')){
+					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" class="number" type="file" value="<?=$rent_selected[$a]?>"></input><br><?php					
 				}else if($a != "created_at" && $a != "updated_at"){
 					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" type="text" value="<?=$rent_selected[$a]?>"></input><br><?php					
 				}

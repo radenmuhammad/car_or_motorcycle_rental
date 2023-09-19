@@ -41,14 +41,14 @@ class HomeController extends Controller
 		  return $pdf->download('items.pdf');		
 	}
 
-	public function create_Rented_pdf(){
+	public function create_renteds_pdf(){
 		  // retreive all records from db
-		  $Rented = Rented::all()->toArray();
+		  $renteds = Rented::all()->toArray();
 		  // share data to view
-		  view()->share('Rented',$Rented);
-		  $pdf = PDF::loadView('pdf_view_for_rent', $Rented)->setPaper('a4', 'landscape');;
+		  view()->share('renteds',$renteds);
+		  $pdf = PDF::loadView('pdf_view_for_rented', $renteds)->setPaper('a4', 'landscape');;
 		  // download PDF file with download method
-		  return $pdf->download('Rented.pdf');		
+		  return $pdf->download('renteds.pdf');		
 	}
 	
     public function logout(Request $request){
@@ -220,8 +220,11 @@ class HomeController extends Controller
 			'days_price',
 			'weeks_price',
 			'months_price',
-			'years_price'
+			'years_price',
+			'image'
 		);		
+		$requests['image'] = time() . '.' . $request->image->extension();		
+        $request->image->storeAs('public/images', $requests['image']);
 		Rented::updateRenteds($requests);
 		return Redirect::intended('home');					
 	}

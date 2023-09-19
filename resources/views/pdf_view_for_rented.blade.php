@@ -1,11 +1,11 @@
 <html>
 	<body>
 	@inject('helper', \App\Classes\CommonClass::class)	
-	  Rents:<br>
+	  Rented:<br>
 	  <table border=1>
 	  <?php
 		$header = true;	  
-		foreach ($rents as $rent) {
+		foreach ($renteds as $rent) {
 			$rent = (array)$rent;
 			if($header){
 				?><tr><?php
