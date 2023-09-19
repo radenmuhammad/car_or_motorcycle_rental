@@ -22,11 +22,10 @@ Route::post('actionlogin', [LoginController::class, 'actionlogin'])->name('actio
 Route::get('/logout', [HomeController::class, 'logout'])->name('logout');
 Route::get('home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::post('update_orders', [HomeController::class, 'update_orders'])->name('update_orders');
-Route::post('update_rents', [HomeController::class, 'update_rents'])->name('update_rents');
+Route::post('update_renteds', [HomeController::class, 'update_renteds'])->name('update_renteds');
 Route::post('update_items', [HomeController::class, 'update_items'])->name('update_items');
 Route::post('update_the_returned_items', [HomeController::class, 'update_the_returned_items'])->name('update_the_returned_items');
 Route::get('actionlogout', [LoginController::class, 'actionlogout'])->name('actionlogout');
-Route::post('update_rents', [HomeController::class, 'update_rents'])->name('update_rents');
 Route::get('create_orders_pdf', [HomeController::class, 'create_orders_pdf'])->name('create_orders_pdf');
 Route::get('create_rents_pdf', [HomeController::class, 'create_rents_pdf'])->name('create_rents_pdf');
 Route::get('create_items_pdf', [HomeController::class, 'create_items_pdf'])->name('create_items_pdf');

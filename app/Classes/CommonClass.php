@@ -13,8 +13,8 @@
 		 
 		}
 		
-		function getRentsTableComment($column){
-			return $db_columns = DB::select("SELECT COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE  TABLE_SCHEMA = 'rental_mobil' AND TABLE_NAME = 'rents' AND COLUMN_NAME = '$column'")[0]->COLUMN_COMMENT;			
+		function getRentedsTableComment($column){
+			return $db_columns = DB::select("SELECT COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE  TABLE_SCHEMA = 'rental' AND TABLE_NAME = 'renteds' AND COLUMN_NAME = '$column'")[0]->COLUMN_COMMENT;			
 		}
 	}
 ?>

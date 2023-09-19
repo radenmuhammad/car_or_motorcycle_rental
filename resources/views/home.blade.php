@@ -76,20 +76,20 @@
   <h4>Welcome <b>{{Auth::user()->email}}</b>.</h4>
 	  <input type="button" name="rents" value="Clear Searching" onClick="document.location.href='{{route('home')}}';"/>
 	  <br>
-	  Rental Data:<br>
-	  <form action="{{route('home') }}" method="GET">
-		<input type="text" id="searching_rents" name="searching_rents" value="<?=$searching_rents?>"/> 
+	  Rented Data:<br>
+	  <form action="{{route('home') }}" method="GET" enctype="multipart/form-data">
+		<input type="text" id="searching_renteds" name="searching_renteds" value="<?=$searching_renteds?>"/> 
 		<input type="submit" id="searching_button" name="searching_button" value="Search"/>	 
 	  </form>	  
 	  <table border=1>
 	  <?php 
 		$header = true;
-		foreach ($rents as $rent) {
+		foreach ($renteds as $rent) {
 			$rent = (array)$rent;
 			if($header){
 				?><tr><td></td><?php
 				foreach ($rent as $a => $b){
-					?><td><?=str_replace('_', ' ', $a)." ".$helper->getRentsTableComment($a)?></td><?php
+					?><td><?=str_replace('_', ' ', $a)." ".$helper->getRentedsTableComment($a)?></td><?php
 				}
 				?><td>&nbsp;</td></tr><?php	
 				$header = false;				
@@ -98,7 +98,7 @@
 			<?php 
 			if(Auth::user()->role == "Administrator"){			
 			?>
-			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_rents=<?=$rent["name_of_items"]?>';"/>
+			<input type="button" name="Edit" value="Edit" onClick="document.location.href='?edit_renteds=<?=$rent["name_of_items"]?>';"/>
 			<input type="button" name="Delete" value="Delete" onClick="document.location.href='?delete_rents=<?=$rent["name_of_items"]?>';"/>
 			<?php 
 			}
@@ -139,36 +139,36 @@
 	  ?>
 	  </table>
 		<?php 
-			for($a=1;$a<=$count_rents;$a++){
-				if($a==$current_rents+1){
+			for($a=1;$a<=$count_renteds;$a++){
+				if($a==$current_renteds+1){
 					echo $a."&nbsp;";										
 				}else{
-					echo "<a href='?searching_rents=".$searching_rents."&count_rents=".$a."'>".$a."</a>&nbsp;";					
+					echo "<a href='?searching_renteds=".$searching_renteds."&count_rents=".$a."'>".$a."</a>&nbsp;";					
 				}				
 			}
 ?>
-	  <br><a href="{{ route('create_rents_pdf') }}">Download the Rental Data For PDF</a><br>	
-	  <a class="btn btn-info" href="{{ route('exportRents.excel') }}">Download the Rental Data For Excel</a><br>		
+	  <br><a href="{{ route('create_rents_pdf') }}">Download the Rented Data For PDF</a><br>	
+	  <a class="btn btn-info" href="{{ route('exportRents.excel') }}">Download the Rented Data For Excel</a><br>		
 <?php			
 			if(Auth::user()->role == "Administrator"){			
 		?>	
 		<form action="{{ route('importRents.excel') }}"
 			  method="POST"
 			  enctype="multipart/form-data">
-			  Upload Rental Data:
+			  Upload Rented Data:
 			@csrf
 			<input type="file" name="file"
 				   class="form-control">
 			<br>
 			<button class="btn btn-success">
-				  Import Rental Data
+				  Import Rented Data
 			   </button>
 		</form>		
-	<form action="{{route('update_rents')}}" method="POST">
+	<form action="{{route('update_renteds')}}" method="POST">
 		@csrf	
 	  <?php 
 	  // old_name_of_items
-		foreach ($rents as $rent) {
+		foreach ($renteds as $rent) {
 			$rent = (array)$rent;
 			foreach ($rent as $a => $b){		
 				$rent_selected[$a] = empty($rent_selected[$a])?"":$rent_selected[$a];
@@ -279,7 +279,7 @@
 						<?=str_replace('_', ' ', $a)?>
 						<select id="name_of_items_select" name="name_of_items">
 							<?php
-							foreach($rents as $rent){
+							foreach($renteds as $rent){
 								$rent = (array)$rent;
 								?><option value="<?=$rent['name_of_items']?>"><?=$rent['name_of_items']?></option><?php	
 							}

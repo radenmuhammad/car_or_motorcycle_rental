@@ -13,7 +13,7 @@ use App\Classes;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Item;
 use App\Models\User;
-use App\Models\Rent;
+use App\Models\Rented;
 use App\Models\Order;
 use App\Charts\UserChart;
 use PDF;
@@ -41,14 +41,14 @@ class HomeController extends Controller
 		  return $pdf->download('items.pdf');		
 	}
 
-	public function create_rents_pdf(){
+	public function create_Rented_pdf(){
 		  // retreive all records from db
-		  $rents = Rent::all()->toArray();
+		  $Rented = Rented::all()->toArray();
 		  // share data to view
-		  view()->share('rents',$rents);
-		  $pdf = PDF::loadView('pdf_view_for_rent', $rents)->setPaper('a4', 'landscape');;
+		  view()->share('Rented',$Rented);
+		  $pdf = PDF::loadView('pdf_view_for_rent', $Rented)->setPaper('a4', 'landscape');;
 		  // download PDF file with download method
-		  return $pdf->download('rents.pdf');		
+		  return $pdf->download('Rented.pdf');		
 	}
 	
     public function logout(Request $request){
@@ -62,24 +62,24 @@ class HomeController extends Controller
 		$requests = $request->only(
 			'count_users',
 			'count_items',
-			'count_rents',
+			'count_renteds',
 			'count_orders',
-			'edit_rents',
+			'edit_renteds',
 			'edit_items',
 			'delete_items',
-			'delete_rents',
+			'delete_rented',
 			'searching_items',
 			'searching_orders',
-			'searching_rents'
+			'searching_renteds'
 		);
 		$sizeOfPage = 5;
 		$requests['count_users']=(empty($requests['count_users'])?0:$requests['count_users'])-1;
 		$requests['count_items']=(empty($requests['count_items'])?0:$requests['count_items'])-1;
-		$requests['count_rents']=(empty($requests['count_rents'])?0:$requests['count_rents'])-1;
+		$requests['count_renteds']=(empty($requests['count_renteds'])?0:$requests['count_renteds'])-1;
 		$requests['count_orders']=(empty($requests['count_orders'])?0:$requests['count_orders'])-1;
 		$requests['searching_items']=(empty($requests['searching_items'])?'':$requests['searching_items']);
 		$requests['searching_orders']=(empty($requests['searching_orders'])?'':$requests['searching_orders']);
-		$requests['searching_rents']=(empty($requests['searching_rents'])?'':$requests['searching_rents']);
+		$requests['searching_renteds']=(empty($requests['searching_renteds'])?'':$requests['searching_renteds']);
 		$edit_items_selected = Array();
 		if(empty($requests['delete_items'])){
 			$requests['delete_items'] = '';
@@ -88,15 +88,15 @@ class HomeController extends Controller
 			return Redirect::intended('home');		
 		}
 		$rent_selected = Array();
-		if(empty($requests['edit_rents'])){
-			$requests['edit_rents'] = '';
+		if(empty($requests['edit_renteds'])){
+			$requests['edit_renteds'] = '';
 		}else{
-			$rent_selected = Rent::getRentsSelected($requests['edit_rents']);				
+			$rent_selected = Rented::getRentedsSelected($requests['edit_renteds']);				
 		}
-		if(empty($requests['delete_rents'])){
-			$requests['delete_rents'] = '';
+		if(empty($requests['delete_renteds'])){
+			$requests['delete_renteds'] = '';
 		}else{
-			Rent::getDeletedRentsSelected($requests['delete_rents']);				
+			Rented::getDeletedRentedsSelected($requests['delete_renteds']);				
 			return Redirect::intended('home');		
 		}		
 		$edit_items_selected = Array();
@@ -109,8 +109,8 @@ class HomeController extends Controller
 		$count_users = User::countUsersPage($sizeOfPage);						
 		$items = Item::getItemsDataOnlyTen($requests['searching_items'],$requests['count_items'], $sizeOfPage);
 		$count_items = Item::countItemsPage($requests['searching_items'],$sizeOfPage);
-		$rents = Rent::getRentsDataOnlyTen($requests['searching_rents'],$requests['count_rents'], $sizeOfPage);
-		$count_rents = Rent::countRentsPage($requests['searching_rents'],$sizeOfPage);		
+		$renteds = Rented::getRentedsDataOnlyTen($requests['searching_renteds'],$requests['count_renteds'], $sizeOfPage);
+		$count_renteds = Rented::countRentedsPage($requests['searching_renteds'],$sizeOfPage);		
 		$orders = Order::getOrdersDataOnlyTen($requests['searching_orders'],$requests['count_orders'], $sizeOfPage);
 		$count_orders = Order::countOrdersPage($requests['searching_orders'],$sizeOfPage);
 		$year = [date("Ym",strtotime("-4 month")),date("Ym",strtotime("-3 month")),date("Ym",strtotime("-2 month")),date("Ym",strtotime("-1 month")),date("Ym")];
@@ -119,20 +119,20 @@ class HomeController extends Controller
             $order_charts[] = Order::getOrderChart($value);
         }        
 		$year = [date("M Y",strtotime("-4 month")),date("M Y",strtotime("-3 month")),date("M Y",strtotime("-2 month")),date("M Y",strtotime("-1 month")),date("M Y")];
-		return view('home',['searching_rents'=>$requests['searching_rents'],
+		return view('home',['searching_renteds'=>$requests['searching_renteds'],
 		                    'searching_items'=>$requests['searching_items'],
 							'searching_orders'=>$requests['searching_orders'],	
 							'year'=>json_encode($year,JSON_NUMERIC_CHECK),
 							'order_charts'=>json_encode($order_charts,JSON_NUMERIC_CHECK),
 							'current_orders'=>$requests['count_orders'],
-		                    'current_rents'=>$requests['count_rents'],
+		                    'current_renteds'=>$requests['count_renteds'],
 							'current_items'=>$requests['count_items'],
 						    'edit_items_selected'=>$edit_items_selected,
 							'rent_selected'=>$rent_selected,
 							'orders' => $orders,
 							'count_orders' => $count_orders,
-		                    'rents' => $rents,
-							'count_rents' => $count_rents,							
+		                    'renteds' => $renteds,
+							'count_renteds' => $count_renteds,							
 							'items' => $items,
 							'count_items' => $count_items,							
 		                    'users' => $users,
@@ -212,7 +212,7 @@ class HomeController extends Controller
 		return Redirect::intended('home');					
 	}
 	
-	public function update_rents(Request $request){
+	public function update_renteds(Request $request){
 		$requests = $request->only(
 			'old_name_of_items',
 			'name_of_items',
@@ -222,7 +222,7 @@ class HomeController extends Controller
 			'months_price',
 			'years_price'
 		);		
-		Rent::updateRents($requests);
+		Rented::updateRenteds($requests);
 		return Redirect::intended('home');					
 	}
 	

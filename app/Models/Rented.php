@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 
-class Rent extends Model
+class Rented extends Model
 {
 	protected $fillable = [
 	'name_of_items','type_of_items','days_price','weeks_price','months_price','years_price'
@@ -16,18 +16,18 @@ class Rent extends Model
 	
     use HasFactory;
 	
-	public static function getRentsDataOnlyTen($searching_rents,$firstItems=0, $sizeOfPage=10){
-		$columns = Schema::getColumnListing('rents');
-		$query = Rent::query();		
+	public static function getRentedsDataOnlyTen($searching_rents,$firstItems=0, $sizeOfPage=10){
+		$columns = Schema::getColumnListing('renteds');
+		$query = Rented::query();		
 		foreach($columns as $column){
 			$query->orWhere($column, 'LIKE', '%' . $searching_rents . '%');
 		}
 		return $query->skip($firstItems*$sizeOfPage)->take($sizeOfPage)->orderBy('created_at', 'asc')->get()->toArray();
 	}	
 
-	public static function countRentsPage($searching_rents,$sizeOfPage=10){
-		$columns = Schema::getColumnListing('rents');
-		$query = Rent::query();		
+	public static function countRentedsPage($searching_rents,$sizeOfPage=10){
+		$columns = Schema::getColumnListing('renteds');
+		$query = Rented::query();		
 		foreach($columns as $column){
 			$query->orWhere($column, 'LIKE', '%' . $searching_rents . '%');
 		}		
@@ -35,15 +35,15 @@ class Rent extends Model
 		return ceil($total/$sizeOfPage);		
 	}
 	
-	public static function updateRents($requests){			
-		$items = (array)DB::table('rents')
+	public static function updateRenteds($requests){			
+		$items = (array)DB::table('renteds')
 			->where('name_of_items', $requests['old_name_of_items'])->first();
 		if(empty($requests['old_name_of_items'])){
-		$items = (array)DB::table('rents')
+		$items = (array)DB::table('rented')
 			->where('name_of_items', $requests['name_of_items'])->first();			
 		}			
 		if(empty($items)){					
-			DB::table('rents')->insert(
+			DB::table('renteds')->insert(
 				array(
 					'name_of_items' => $requests['name_of_items'],	
 					'type_of_items' => $requests['type_of_items'],
@@ -55,7 +55,7 @@ class Rent extends Model
 				)
 			);
 		}else{
-			DB::table('rents')
+			DB::table('renteds')
 				->where('name_of_items',$requests['old_name_of_items'])
 				->update(array(
 						'name_of_items' => $requests['name_of_items'],
@@ -69,12 +69,12 @@ class Rent extends Model
 		}
 	}
 		
-	public static function getRentsSelected($id_rents){
-		return (array)DB::table('rents')->where('name_of_items', $id_rents)->first();
+	public static function getRentedsSelected($id_rents){
+		return (array)DB::table('renteds')->where('name_of_items', $id_rents)->first();
 	}	
 
-	public static function getDeletedRentsSelected($id_rents){
-		return (array)DB::table('rents')->where('name_of_items', $id_rents)->delete();
+	public static function getDeletedRentedsSelected($id_rents){
+		return (array)DB::table('renteds')->where('name_of_items', $id_rents)->delete();
 	}	
 				
 }

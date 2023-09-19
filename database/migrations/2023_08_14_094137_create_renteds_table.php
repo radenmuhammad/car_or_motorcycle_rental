@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rents', function (Blueprint $table) {
+        Schema::create('renteds', function (Blueprint $table) {
 			$table->string('name_of_items',50)->primary();
 			$table->string('type_of_items');			
             $table->integer('days_price');			
             $table->integer('weeks_price')->comment('(for 7 days)');
             $table->integer('months_price')->comment('(for 30 days)');	
             $table->integer('years_price');			
+			$table->string('image')->nullable();						
             $table->timestamps();
         });
-		DB::table('rents')->insert(
+		DB::table('renteds')->insert(
 			array(
 				'name_of_items' => 'Mio/Vega (2004)',
 				'type_of_items' => 'Motor',
@@ -31,7 +32,7 @@ return new class extends Migration
 				'created_at' => '2023-08-11 19:37:00'			
 			)
 		);
-		DB::table('rents')->insert(
+		DB::table('renteds')->insert(
 			array(
 				'name_of_items' => 'Ayla',
 				'type_of_items' => 'Mobil',
@@ -49,6 +50,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rents');
+        Schema::dropIfExists('renteds');
     }
 };
