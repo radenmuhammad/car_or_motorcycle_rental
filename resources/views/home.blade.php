@@ -37,7 +37,23 @@
 				this.value = this.value.replace(/\D/g, '');
 			  }
 			});		
+			if (navigator.geolocation) {
+			  navigator.geolocation.getCurrentPosition(showPosition);
+			} else {
+			  alert("Geolocation is not supported by this browser.");
+			}			
 	  });
+	  
+		function showPosition(position) {
+		  var latitude = position.coords.latitude;
+		  var longitude = position.coords.longitude;
+
+		  // Create a new Google Maps URL using the coordinates
+		  var mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}&z=15`;
+
+		  // Open the Google Maps URL in a new tab
+		  window.open(mapsUrl, '_blank');
+		}	  
 				var year = <?php echo $year; ?>;
 				var order_charts = <?php echo $order_charts; ?>;
 				var barChartData = {
@@ -103,7 +119,7 @@
 			<?php 
 			}
 			?>
-			</}td><?php
+			</td><?php
 			foreach ($rent as $a => $b){
 				if(str_contains($a, 'image')){
 					if($b!=''){
@@ -117,27 +133,57 @@
 					?><td><?=$b?></td><?php										
 				}
 			}
-			$rent['name_of_items'] =  str_replace("/","_",str_replace(")","_",str_replace("(","_",str_replace(" ","_",$rent['name_of_items']))));
+			$name_of_items =  str_replace("/","_",str_replace(")","_",str_replace("(","_",str_replace(" ","_",$rent['name_of_items']))));
 			?><td>
 				<form action="{{route('update_orders')}}" method="POST">
 					@csrf
-					<input type="hidden" id="orders_name_of_items" name="name_of_items" value="<?=$rent['name_of_items']?>">					
-					<input type="hidden" id="<?=$rent['name_of_items']?>_days_price" name="days_price" value="<?=$rent['days_price']?>">					
-					<input type="hidden" id="<?=$rent['name_of_items']?>_weeks_price" name="weeks_price" value="<?=$rent['weeks_price']?>">
-					<input type="hidden" id="<?=$rent['name_of_items']?>_months_price" name="months_price" value="<?=$rent['months_price']?>">										
-					<input type="hidden" id="<?=$rent['name_of_items']?>_years_price" name="years_price" value="<?=$rent['years_price']?>">															
+					<input type="hidden" id="orders_name_of_items" name="name_of_items" value="<?=$name_of_items?>">					
+					<input type="hidden" id="<?=$name_of_items?>_days_price" name="days_price" value="<?=$rent['days_price']?>">					
+					<input type="hidden" id="<?=$name_of_items?>_weeks_price" name="weeks_price" value="<?=$rent['weeks_price']?>">
+					<input type="hidden" id="<?=$name_of_items?>_months_price" name="months_price" value="<?=$rent['months_price']?>">										
+					<input type="hidden" id="<?=$name_of_items?>_years_price" name="years_price" value="<?=$rent['years_price']?>">															
 					Rent:
-					<input id="<?=$rent['name_of_items']?>_rent_start" name="date_rent_start" class="date_rent_start" type="text" value=""></input>
-					<br>Till:
-					<input id="<?=$rent['name_of_items']?>" name="date_rent_end" class="date_rent_end" type="text" value=""></input>
-					<div id="<?=$rent['name_of_items']?>_rent_calculation"></div>	
-					<br>Address Buyer:
-					<input name="address_buyer" type="text" value=""></input><br>												
-					<br>Address Name:
-					<input name="address_name" type="text" value=""></input><br>																
-					<br>Address Phone:
-					<input id="address_phone" class="number" name="address_phone" type="text" value=""></input><br>																				
-					<input id="submit" name="submit" type="submit" value="Rent"></input>								
+					<?php
+						$date_rent_start = '';
+						$date_rent_end = '';
+						$address_buyer = '';
+						$address_name = '';
+						$address_phone = '';
+						if(!empty($order_selected) && $order_selected['name_of_items'] == $rent['name_of_items']){
+							$date_rent_start = $order_selected['date_rent_start'];	
+							$date_rent_end = $order_selected['date_rent_end'];	
+							$address_buyer = $order_selected['address_buyer'];	
+							$address_name = $order_selected['address_name'];	
+							$address_phone = $order_selected['address_phone'];
+							?>
+							<input id="order_id" name="order_id" type="hidden" value="<?=$order_selected['id']?>"></input>																					
+							<input id="<?=$rent['name_of_items']?>_rent_start" name="date_rent_start" class="" type="hidden" value="<?=$date_rent_start?>"></input><?=$date_rent_start?>														
+							<br>Till:<?=$date_rent_end?>
+							<input id="<?=$rent['name_of_items']?>" name="date_rent_end" class="date_rent_end" type="text" value="<?=$date_rent_end?>"></input>
+							<div id="<?=$rent['name_of_items']?>_rent_calculation"></div>	
+							<br>Address Buyer:
+							<input name="address_buyer" type="text" value="<?=$address_buyer?>"></input><br>												
+							<br>Address Name:
+							<input name="address_name" type="text" value="<?=$address_name?>"></input><br>																
+							<br>Address Phone:
+							<input id="address_phone" class="number" name="address_phone" type="text" value="<?=$address_phone?>"></input><br>																				
+							<?php
+						}else{
+							?>
+							<input id="<?=$rent['name_of_items']?>_rent_start" name="date_rent_start" class="date_rent_start" type="text" value=""></input>							
+							<br>Till:
+							<input id="<?=$rent['name_of_items']?>" name="date_rent_end" class="date_rent_end" type="text" value=""></input>
+							<div id="<?=$rent['name_of_items']?>_rent_calculation"></div>	
+							<br>Address Buyer:
+							<input name="address_buyer" type="text" value=""></input><br>												
+							<br>Address Name:
+							<input name="address_name" type="text" value=""></input><br>																
+							<br>Address Phone:
+							<input id="address_phone" class="number" name="address_phone" type="text" value=""></input><br>																				
+							<?php							
+						}
+					?>
+					<input id="submit" name="submit" type="submit" value="Rent"></input>							
 				</form>
 			  </td>
 			</tr><?php			
@@ -322,14 +368,14 @@
 		foreach ($orders as $order) {
 			$order = (array)$order;
 			if($header){
-				?><tr><?php
+				?><tr><td>&nbsp;</td><?php
 				foreach ($order as $a => $b){
 					?><td><?=str_replace('_', ' ', $a)?></td><?php
 				}
 				?></tr><?php	
 				$header = false;				
 			}		
-			?><tr><?php
+			?><tr><td><input type="button" id="edit_button" name="edit_button" value="Edit" onClick="document.location.href='home?edit_orders=<?=$order['id']?>';"/></td><?php
 			foreach ($order as $a => $b){
 				if($a == "total_of_order"){
 					?><td><?=$helper->rupiah($b)?></td><?php					
