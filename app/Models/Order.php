@@ -81,5 +81,11 @@ class Order extends Model
 		->where('id', $id_order)
 		->first();		
 	}
-	
+
+	public static function deleteOrdersSelected($id_order){
+		DB::table('orders')
+		->where('id', $id_order)
+		->delete();		
+	}
+
 }

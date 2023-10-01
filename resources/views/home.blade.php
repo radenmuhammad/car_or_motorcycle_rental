@@ -137,7 +137,7 @@
 			?><td>
 				<form action="{{route('update_orders')}}" method="POST">
 					@csrf
-					<input type="hidden" id="orders_name_of_items" name="name_of_items" value="<?=$name_of_items?>">					
+					<input type="hidden" id="orders_name_of_items" name="name_of_items" value="<?=$rent['name_of_items']?>">					
 					<input type="hidden" id="<?=$name_of_items?>_days_price" name="days_price" value="<?=$rent['days_price']?>">					
 					<input type="hidden" id="<?=$name_of_items?>_weeks_price" name="weeks_price" value="<?=$rent['weeks_price']?>">
 					<input type="hidden" id="<?=$name_of_items?>_months_price" name="months_price" value="<?=$rent['months_price']?>">										
@@ -375,7 +375,7 @@
 				?></tr><?php	
 				$header = false;				
 			}		
-			?><tr><td><input type="button" id="edit_button" name="edit_button" value="Edit" onClick="document.location.href='home?edit_orders=<?=$order['id']?>';"/></td><?php
+			?><tr><td><input type="button" id="delete_button" name="delete_button" value="Delete" onClick="document.location.href='home?delete_orders=<?=$order['id']?>';"/><input type="button" id="edit_button" name="edit_button" value="Edit" onClick="document.location.href='home?edit_orders=<?=$order['id']?>';"/></td><?php
 			foreach ($order as $a => $b){
 				if($a == "total_of_order"){
 					?><td><?=$helper->rupiah($b)?></td><?php					

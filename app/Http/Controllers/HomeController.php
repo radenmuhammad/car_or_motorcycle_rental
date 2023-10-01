@@ -63,6 +63,7 @@ class HomeController extends Controller
 			'delete_items',
 			'delete_renteds',
 			'delete_renteds',
+			'delete_orders',
 			'searching_items',
 			'searching_orders',
 			'searching_renteds',
@@ -94,6 +95,12 @@ class HomeController extends Controller
 			$requests['edit_orders'] = '';
 		}else{
 			$order_selected = Order::getOrdersSelected($requests['edit_orders']);				
+		}		
+		if(empty($requests['delete_orders'])){
+			$requests['delete_orders'] = '';
+		}else{
+			Order::deleteOrdersSelected($requests['delete_orders']);				
+			return Redirect::intended('home');			
 		}		
 		if(empty($requests['delete_renteds'])){
 			$requests['delete_renteds'] = '';
@@ -199,48 +206,6 @@ class HomeController extends Controller
 		}
 	}
 
-	public function calculate_distance_between_two_date_chosen($request){
-		$date1 = strtotime($requests['date_rent_start']);
-		$date2 = strtotime($requests['date_rent_end']);
-		$diff = abs($date2 - $date1);
-
-		// To get the year divide the resultant date into
-		// total seconds in a year (365*60*60*24)
-		$years_order = 0;
-		if($requests['years_price'] > 0){
-			$years_order = floor($diff / (365*60*60*24));			
-		}
-
-		// To get the month, subtract it with years and
-		// divide the resultant date into
-		// total seconds in a month (30*60*60*24)
-		$months_order = 0;
-		if($requests['months_price'] > 0){
-			$months_order = floor(($diff - $years_order * 365*60*60*24)
-										/ (30*60*60*24));
-		}
-		// To get the day, subtract it with years and
-		// months and divide the resultant date into
-		// total seconds in a days (60*60*24)
-		$days_order = floor(($diff - $years_order * 365*60*60*24 -
-					$months_order*30*60*60*24)/ (60*60*24));
-		// Print the result
-		$weeks_order = 0;
-		if($requests['weeks_price'] > 0){
-			$weeks_order = floor($days_order / 7);			
-		}
-		$days_order = $days_order - ($weeks_order * 7);
-				$total_of_order = ($years_order * $requests['years_price']) +
-					   ($months_order * $requests['months_price']) +	
-					   ($weeks_order * $requests['weeks_price']) +	
-					   ($days_order * $requests['days_price'])					   
-		;
-		if($requests['date_rent_end']!="" && strtotime($requests['date_rent_end']) > strtotime($requests['date_rent_start'])){
-			return $total_of_order;
-		}
-		return 0;
-	}
-		
 	public function update_the_returned_items(Request $request){
 		$requests = $request->only('vehicle_license_plate');
 		Item::updateAvailableTrueFromItemsByVehicleLicensePlate($requests['vehicle_license_plate']);				
