@@ -83,6 +83,14 @@ class Order extends Model
 	}
 
 	public static function deleteOrdersSelected($id_order){
+		$orders = (array)DB::table('orders')
+		->where('id', $id_order)
+		->first();		
+		DB::table('items')
+		->where('vehicle_license_plate', $orders['vehicle_license_plate'])
+		->update(array(
+			'available' => 1
+		));		
 		DB::table('orders')
 		->where('id', $id_order)
 		->delete();		
