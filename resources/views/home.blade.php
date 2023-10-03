@@ -272,7 +272,9 @@
 			?>		
 			</td><?php
 			foreach ($item as $a => $b){
-				if(str_contains($a, 'price')){
+				if(str_contains($a, 'available')){
+					?><td><?=(($b == 1)?"Yes":"No")?></td><?php										
+				}else if(str_contains($a, 'price')){
 					?><td><?=$helper->rupiah($b)?></td><?php						
 				}else{
 					?><td><?=$b?></td><?php					
