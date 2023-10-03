@@ -13,10 +13,12 @@ class Order extends Model
     use HasFactory;
 	
 	public static function getOrderChart($value){
-//		mysql
-//		return Order::whereRaw("to_date(date_rent_start, '%Y%m')='".$value."'")->count();
-//      postgres sql
-		return Order::whereRaw("to_char(date_rent_start,'yyyymm')='".$value."'")->count();		
+		try {
+			return Order::whereRaw("to_char(date_rent_start,'yyyymm')='".$value."'")->count();		
+		}
+		catch(\Exception $e) {
+			return Order::whereRaw("DATE_FORMAT(date_rent_start, '%Y%m')='".$value."'")->count();
+		}
 	}
 	
 	public static function getOrdersDataOnlyTen($searching_orders,$firstItems=0, $sizeOfPage=10){
