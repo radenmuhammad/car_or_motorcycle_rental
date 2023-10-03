@@ -297,7 +297,8 @@ class HomeController extends Controller
 			$requests['weeks_order'] = $weeks_order;
 			$requests['years_order'] = $years_order;
 			$requests['total_of_order'] = $total_of_order;
-			Order::updateOrders($requests);				
+			$requests['updated_at'] = Carbon::now()->timezone('Asia/Jakarta');
+			Order::updateOrders($requests);
 			return view("update_orders",["alert"=>"this item has been already rent!"]);					
 		}else if(!empty($vehicle_license_plate)){
 			$requests['vehicle_license_plate'] = $vehicle_license_plate;

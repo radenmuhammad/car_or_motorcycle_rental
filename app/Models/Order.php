@@ -53,7 +53,7 @@ class Order extends Model
 				'weeks_order' => $requests['weeks_order'],
 				'days_order' => $requests['days_order'],	
 				'total_of_order'=> $requests['total_of_order'],
-				'created_at' => Carbon::now()->timezone('Asia/Jakarta')
+				'updated_at' => Carbon::now()->timezone('Asia/Jakarta')
 			)
 		);
 	}	
