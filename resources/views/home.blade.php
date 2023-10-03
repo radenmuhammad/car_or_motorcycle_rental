@@ -223,15 +223,18 @@
 		foreach ($renteds as $rent) {
 			$rent = (array)$rent;
 			foreach ($rent as $a => $b){		
-				$rent_selected[$a] = empty($rent_selected[$a])?"":$rent_selected[$a];
 				if($a=="name_of_items"){
+					$rent_selected[$a] = empty($rent_selected[$a])?"":$rent_selected[$a];					
 					?><input id="<?=$a?>" name="old_<?=$a?>" type="hidden" value="<?=$rent_selected[$a]?>"></input><?php										
 					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" type="text" value="<?=$rent_selected[$a]?>"></input><br><?php										
 				}else if(str_contains($a, 'price')){
+					$rent_selected[$a] = empty($rent_selected[$a])?"0":$rent_selected[$a];					
 					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" class="number" type="text" value="<?=$rent_selected[$a]?>"></input><br><?php					
 				}else if(str_contains($a, 'image')){
+					$rent_selected[$a] = empty($rent_selected[$a])?"":$rent_selected[$a];					
 					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" class="number" type="file" value="<?=$rent_selected[$a]?>"></input><br><?php					
 				}else if($a != "created_at" && $a != "updated_at"){
+					$rent_selected[$a] = empty($rent_selected[$a])?"":$rent_selected[$a];					
 					?><?=str_replace('_', ' ', $a)?><input id="<?=$a?>" name="<?=$a?>" type="text" value="<?=$rent_selected[$a]?>"></input><br><?php					
 				}
 			}
