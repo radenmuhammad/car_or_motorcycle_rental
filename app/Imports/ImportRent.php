@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Rent;
+use App\Models\Rented;
 use Maatwebsite\Excel\Concerns\ToModel;
 use ZipArchive;
 use Illuminate\Support\Facades\DB;
@@ -17,10 +17,10 @@ class ImportRent implements ToModel
     */
     public function model(array $row)
     {
-		$rents = (array)DB::table('rents')
+		$rents = (array)DB::table('renteds')
 			->where('name_of_items', $row[0])->first();
 		if(empty($rents)){	
-			return new Rent([
+			return new Rented([
 				'name_of_items' => $row[0],
 				'type_of_items' => $row[1],	
 				'days_price' => $row[2],	
@@ -29,7 +29,7 @@ class ImportRent implements ToModel
 				'years_price' => $row[5]		
 			]);		
 		}else{
-			DB::table('rents')
+			DB::table('renteds')
 				->where('name_of_items',$row[0])
 				->update(array(
 						'type_of_items' => $row[1],

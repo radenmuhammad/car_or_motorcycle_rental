@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('renteds', function (Blueprint $table) {
-			$table->string('image')->nullable();
 			$table->string('name_of_items',50)->primary();
 			$table->string('type_of_items');			
             $table->integer('days_price')->comment('');			
             $table->integer('weeks_price')->comment('(for 7 days)');
             $table->integer('months_price')->comment('(for 30 days)');	
             $table->integer('years_price');			
+			$table->string('image')->nullable();
+            $table->integer('id')->nullable();			
             $table->timestamps();
         });
 		DB::table('renteds')->insert(
@@ -29,7 +30,8 @@ return new class extends Migration
 				'weeks_price' => '250000',
 				'months_price' => '740000',
 				'years_price' => '0',				
-				'created_at' => '2023-08-11 19:37:00'			
+				'created_at' => '2023-08-11 19:37:00',			
+				'id' => 0
 			)
 		);
 		DB::table('renteds')->insert(
@@ -40,7 +42,8 @@ return new class extends Migration
 				'weeks_price' => '0',
 				'months_price' => '0',
 				'years_price' => '0',				
-				'created_at' => '2023-08-11 19:37:00'			
+				'created_at' => '2023-08-11 19:37:00',			
+				'id' => 0			
 			)
 		);		
     }

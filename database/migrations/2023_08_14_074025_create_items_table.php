@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name_of_items');
             $table->integer('price');			
             $table->boolean('available')->default(1);			
-            $table->string('distributor');			
+            $table->string('distributor');		
+            $table->integer('id')->nullable();				
             $table->timestamps();
         });
 		DB::table('items')->insert(
@@ -26,7 +27,8 @@ return new class extends Migration
 				'price' => '5000000',
 				'available' => true,
 				'distributor' => 'Hairus',
-				'created_at' => '2023-08-11 19:37:00'				
+				'created_at' => '2023-08-11 19:37:00',			
+				'id' => 0				
 			)
 		);				
 		DB::table('items')->insert(
@@ -36,7 +38,8 @@ return new class extends Migration
 				'price' => '135000000',
 				'available' => true,
 				'distributor' => 'Hairus',
-				'created_at' => '2023-08-11 19:37:00'				
+				'created_at' => '2023-08-11 19:37:00',			
+				'id' => 0								
 			)
 		);				
     }
