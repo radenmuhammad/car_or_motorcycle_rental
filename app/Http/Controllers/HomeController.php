@@ -235,8 +235,13 @@ class HomeController extends Controller
 			'years_price',
 			'image'
 		);		
-		$requests['image'] = time() . '.' . $request->image->extension();		
-        $request->image->storeAs('public/images', $requests['image']);
+	//	print_r($request);
+	//	exit;	
+		$requests['image'] = '';
+		if(!empty($request->image)){
+			$requests['image'] = time() . '.' . $request->image->extension();					
+			$request->image->storeAs('public/images', $requests['image']);
+		}
 		Rented::updateRenteds($requests);
 		return Redirect::intended('home');					
 	}

@@ -56,18 +56,32 @@ class Rented extends Model
 				)
 			);
 		}else{
-			DB::table('renteds')
-				->where('name_of_items',$requests['old_name_of_items'])
-				->update(array(
-						'name_of_items' => $requests['name_of_items'],
-						'type_of_items' => $requests['type_of_items'],
-						'days_price' => $requests['days_price'],
-						'weeks_price' => $requests['weeks_price'],
-						'months_price' => $requests['months_price'],	
-						'years_price' => $requests['years_price'],	
-						'image' => $requests['image'],
-						'updated_at' => Carbon::now()->timezone('Asia/Jakarta')
-					));					
+			if(empty($requests['image'])){
+				DB::table('renteds')
+					->where('name_of_items',$requests['old_name_of_items'])
+					->update(array(
+							'name_of_items' => $requests['name_of_items'],
+							'type_of_items' => $requests['type_of_items'],
+							'days_price' => $requests['days_price'],
+							'weeks_price' => $requests['weeks_price'],
+							'months_price' => $requests['months_price'],	
+							'years_price' => $requests['years_price'],
+							'updated_at' => Carbon::now()->timezone('Asia/Jakarta')
+				));									
+			}else{
+				DB::table('renteds')
+					->where('name_of_items',$requests['old_name_of_items'])
+					->update(array(
+							'name_of_items' => $requests['name_of_items'],
+							'type_of_items' => $requests['type_of_items'],
+							'days_price' => $requests['days_price'],
+							'weeks_price' => $requests['weeks_price'],
+							'months_price' => $requests['months_price'],	
+							'years_price' => $requests['years_price'],	
+							'image' => $requests['image'],
+							'updated_at' => Carbon::now()->timezone('Asia/Jakarta')
+						));									
+			}
 		}
 	}
 		
